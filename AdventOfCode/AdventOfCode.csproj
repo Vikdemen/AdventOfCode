@@ -40,6 +40,7 @@
   <ItemGroup>
     <Compile Include="AdventSolver.cs" />
     <Compile Include="IntCode.cs" />
+    <Compile Include="Password.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rocket.cs" />
     <Compile Include="Wire.cs" />

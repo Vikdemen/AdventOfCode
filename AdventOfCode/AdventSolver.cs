@@ -38,6 +38,10 @@ namespace AdventOfCode
                     return GetInterSection(ReadFile("day3.txt"));
                 case "signal-delay":
                     return SmallestDelay(ReadFile("day3.txt"));
+                case "secure-container":
+                    return SecureContainer(ReadFile("day4.txt"));
+                case "more-secure":
+                    return MoreSecure(ReadFile("day4.txt"));
                 case "exit":
                     Environment.Exit(0);
                     return "exiting program";
@@ -126,9 +130,26 @@ namespace AdventOfCode
             return $"Smallest delay is {result.ToString()}";
         }
 
+        public static string SecureContainer(string[] data)
+        {
+            data = data[0].Split(new char[] {'-'});
+            int start = int.Parse(data[0]);
+            int finish = int.Parse(data[1]);
+            int result = Password.CountValid(start, finish);
+            return $"{result} passwords are valid";
+        }
+
+        public static string MoreSecure(string[] data)
+        {
+            data = data[0].Split(new char[] {'-'});
+            int start = int.Parse(data[0]);
+            int finish = int.Parse(data[1]);
+            int result = Password.CountMoreValid(start, finish);
+            return $"{result} passwords are valid";
+        }
+
         public static string[] ReadFile(string fileName, string folder = inputFolder)
             => System.IO.File.ReadAllLines(inputFolder + fileName);
-
         //turns the string array into int array
         public static int[] ParseNumbers(string[] data) => Array.ConvertAll(data, int.Parse);
         //doesn't check for invalid input yet
