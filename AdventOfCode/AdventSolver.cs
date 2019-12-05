@@ -27,13 +27,17 @@ namespace AdventOfCode
             switch (commandName)
             {
                 case "calculate-fuel":
-                    return CalculateFuel();
+                    return CalculateFuel(ReadFile("day1.txt"));
                 case "calculate-fuel-r":
-                    return CalculateFuelRecursive();
+                    return CalculateFuelRecursive(ReadFile("day1.txt"));
                 case "program-alarm":
-                    return ProgramAlarm();
+                    return ProgramAlarm(ReadFile("day2.txt"));
                 case "gravity-assist":
-                    return GravityAssist();
+                    return GravityAssist(ReadFile("day2.txt"));
+                case "crossed-wires":
+                    return GetInterSection(ReadFile("day3.txt"));
+                case "signal-delay":
+                    return SmallestDelay(ReadFile("day3.txt"));
                 case "exit":
                     Environment.Exit(0);
                     return "exiting program";
@@ -44,37 +48,33 @@ namespace AdventOfCode
         }
 
         //day 1
-        public static string CalculateFuel()
+        public static string CalculateFuel(string[] data)
         {
-            string[] data = ReadFile("day1.txt");
             int result = Rocket.FuelForModules(ParseNumbers(data));
             return $"We need {result.ToString()} fuel in total";
         }
 
         //day 1 pt 2
-        public static string CalculateFuelRecursive()
+        public static string CalculateFuelRecursive(string[] data)
         {
-            string[] data = ReadFile("day1.txt");
             int result = Rocket.FuelForModulesRecursive(ParseNumbers(data));
             return $"We need {result.ToString()} fuel in total";
         }
         
         //day 2
-        public static string ProgramAlarm()
+        public static string ProgramAlarm(string[] data)
         {
-            string data = ReadFile("day2.txt")[0];
             int[] commands = 
-                ParseNumbers(data.Split(new char[] {','}, StringSplitOptions.RemoveEmptyEntries));
+                ParseNumbers(data[0].Split(new char[] {','}, StringSplitOptions.RemoveEmptyEntries));
             IntCode computer = new IntCode(commands);
             int result = computer.OpList[0];
             return $"Program finished, {result.ToString()}" ;
         }
 
-        public static string GravityAssist()
+        public static string GravityAssist(string[] data)
         {
-            string data = ReadFile("day2.txt")[0];
             int[] commands = 
-                ParseNumbers(data.Split(new char[] {','}, StringSplitOptions.RemoveEmptyEntries));
+                ParseNumbers(data[0].Split(new char[] {','}, StringSplitOptions.RemoveEmptyEntries));
             int noun = 0;
             int verb = 0;
             for (int i = 0; i < 100; i++)
@@ -94,6 +94,36 @@ namespace AdventOfCode
             }
             int result = noun * 100 + verb;
             return $"Program finished, {result.ToString()}" ;
+        }
+
+        public static string GetInterSection(string[] data)
+        {
+            Wire wire0 = new Wire(data[0]);
+            Wire wire1 = new Wire(data[1]);
+            int result = Wire.GetClosest(Wire.Intersect(wire0, wire1));
+            if (result == -1)
+            {
+                return $"No intersections found";
+            }
+            return $"Distance to closest intersection is {result.ToString()}";
+        }
+
+        public static string SmallestDelay(string[] data)
+        {
+            Wire wire0 = new Wire(data[0]);
+            Wire wire1 = new Wire(data[1]);
+            var intersections = Wire.Intersect(wire0, wire1);
+            int result = 100500;
+            foreach (var intersection in intersections)
+            {
+                int delay = Wire.SignalDelay(wire0, wire1, intersection);
+                if (delay < result)
+                    result = delay;
+            }
+
+            if (result == 100500)
+                return "Can't determine the signal delay";
+            return $"Smallest delay is {result.ToString()}";
         }
 
         public static string[] ReadFile(string fileName, string folder = inputFolder)
