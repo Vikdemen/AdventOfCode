@@ -75,7 +75,7 @@ namespace AdventOfCode
             string commands = data[0];
             IntCode computer = new IntCode();
             computer.Run(commands);
-            int result = computer.Memory[0];
+            int result = computer.MemoryRegister[0];
             return $"Program finished, {result.ToString()}" ;
         }
 

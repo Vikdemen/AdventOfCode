@@ -14,23 +14,23 @@ namespace AdventTest
         {
             IntCode computer = new IntCode();
             computer.Run(input);
-            int[] result = computer.Memory;
+            int[] result = computer.MemoryRegister;
             CollectionAssert.AreEqual(output, result);
         }
         
         [TestCase("3,0,4,0,99", 7, 7)]
         [TestCase("3,9,8,9,10,9,4,9,99,-1,8", 8, 1)]
-        [TestCase("3,9,8,9,10,9,4,9,99,-1,8", 9, 0)]
-        [TestCase("3,9,7,9,10,9,4,9,99,-1,8", 7, 1)]
-        [TestCase("3,9,7,9,10,9,4,9,99,-1,8", 9, 0)]
+        [TestCase("3,9,8,9,10,9,4,9,99,-1,8", 88, 0)]
+        [TestCase("3,9,7,9,10,9,4,9,99,-1,8", -88, 1)]
+        [TestCase("3,9,7,9,10,9,4,9,99,-1,8", 88, 0)]
         [TestCase("3,3,1108,-1,8,3,4,3,99", 8, 1)]
-        [TestCase("3,3,1108,-1,8,3,4,3,99", 9, 0)]
-        [TestCase("3,3,1107,-1,8,3,4,3,99", 7, 1)]
-        [TestCase("3,3,1107,-1,8,3,4,3,99", 9, 0)]
+        [TestCase("3,3,1108,-1,8,3,4,3,99", 88, 0)]
+        [TestCase("3,3,1107,-1,8,3,4,3,99", -88, 1)]
+        [TestCase("3,3,1107,-1,8,3,4,3,99", 88, 0)]
         [TestCase("3,12,6,12,15,1,13,14,13,4,13,99,-1,0,1,9", 0, 0)]
-        [TestCase("3,12,6,12,15,1,13,14,13,4,13,99,-1,0,1,9", 9, 1)]
+        [TestCase("3,12,6,12,15,1,13,14,13,4,13,99,-1,0,1,9", 88, 1)]
         [TestCase("3,3,1105,-1,9,1101,0,0,12,4,12,99,1", 0, 0)]
-        [TestCase("3,3,1105,-1,9,1101,0,0,12,4,12,99,1", 9, 1)]
+        [TestCase("3,3,1105,-1,9,1101,0,0,12,4,12,99,1", 88, 1)]
         public void ParameterTest(string program, int input, int output)
         {
             IntCode computer = new IntCode();

@@ -41,7 +41,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdventSolver.cs" />
-    <Compile Include="IntCode.cs" />
+    <Compile Include="IntCode\IntCode.cs" />
+    <Compile Include="IntCode\IntCodeInstruction.cs" />
+    <Compile Include="IntCode\Memory.cs" />
+    <Compile Include="IntCode\OpCodeTable.cs" />
     <Compile Include="OrbitMap.cs" />
     <Compile Include="Password.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
