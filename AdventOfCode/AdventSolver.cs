@@ -41,7 +41,11 @@ namespace AdventOfCode
                 case "secure-container":
                     return SecureContainer(ReadFile("day4.txt"));
                 case "more-secure":
-                    return MoreSecure(ReadFile("day4.txt"));
+                    return SecureContainer(ReadFile("day4.txt"), true);
+                case "diagnostic":
+                    return Diagnostic(ReadFile("day5.txt"), 1);
+                case "radiator":
+                    return Diagnostic(ReadFile("day5.txt"), 5);
                 case "exit":
                     Environment.Exit(0);
                     return "exiting program";
@@ -54,49 +58,33 @@ namespace AdventOfCode
         //day 1
         public static string CalculateFuel(string[] data)
         {
-            int result = Rocket.FuelForModules(ParseNumbers(data));
+            int result = Rocket.FuelForModules(Array.ConvertAll(data, int.Parse));
             return $"We need {result.ToString()} fuel in total";
         }
 
         //day 1 pt 2
         public static string CalculateFuelRecursive(string[] data)
         {
-            int result = Rocket.FuelForModulesRecursive(ParseNumbers(data));
+            int result = Rocket.FuelForModulesRecursive(Array.ConvertAll(data, int.Parse));
             return $"We need {result.ToString()} fuel in total";
         }
         
         //day 2
         public static string ProgramAlarm(string[] data)
         {
-            int[] commands = 
-                ParseNumbers(data[0].Split(new char[] {','}, StringSplitOptions.RemoveEmptyEntries));
-            IntCode computer = new IntCode(commands);
-            int result = computer.OpList[0];
+            string commands = data[0];
+            IntCode computer = new IntCode();
+            computer.Run(commands);
+            int result = computer.Memory[0];
             return $"Program finished, {result.ToString()}" ;
         }
 
         public static string GravityAssist(string[] data)
         {
-            int[] commands = 
-                ParseNumbers(data[0].Split(new char[] {','}, StringSplitOptions.RemoveEmptyEntries));
-            int noun = 0;
-            int verb = 0;
-            for (int i = 0; i < 100; i++)
-            {
-                for (int j = 0; j < 100; j++)
-                {
-                    commands[1] = i;
-                    commands[2] = j;
-                    IntCode computer = new IntCode(commands);
-                    int output = computer.OpList[0];
-                    if (output == 19690720)
-                    {
-                        noun = i;
-                        verb = j;
-                    }
-                }
-            }
-            int result = noun * 100 + verb;
+            string commands = data[0];
+            int target = 19690720;
+            IntCode computer = new IntCode();
+            int result = computer.FindNounVerb(commands, target);
             return $"Program finished, {result.ToString()}" ;
         }
 
@@ -130,28 +118,29 @@ namespace AdventOfCode
             return $"Smallest delay is {result.ToString()}";
         }
 
-        public static string SecureContainer(string[] data)
+        public static string SecureContainer(string[] data, bool additionalTest = false)
         {
-            data = data[0].Split(new char[] {'-'});
+            data = data[0].Split('-');
             int start = int.Parse(data[0]);
             int finish = int.Parse(data[1]);
-            int result = Password.CountValid(start, finish);
+            int result;
+            if (additionalTest)
+                result = Password.CountMoreValid(start, finish);
+            else
+                result = Password.CountValid(start, finish);
             return $"{result} passwords are valid";
+            
         }
 
-        public static string MoreSecure(string[] data)
+        public static string Diagnostic(string[] data, int input)
         {
-            data = data[0].Split(new char[] {'-'});
-            int start = int.Parse(data[0]);
-            int finish = int.Parse(data[1]);
-            int result = Password.CountMoreValid(start, finish);
-            return $"{result} passwords are valid";
+            var computer = new IntCode();
+            computer.Run(data[0], input);
+            int code = computer.Output;
+            return $"Diagnostic code is {code.ToString()}";
         }
 
         public static string[] ReadFile(string fileName, string folder = inputFolder)
-            => System.IO.File.ReadAllLines(inputFolder + fileName);
-        //turns the string array into int array
-        public static int[] ParseNumbers(string[] data) => Array.ConvertAll(data, int.Parse);
-        //doesn't check for invalid input yet
+            => System.IO.File.ReadAllLines(string.Concat(inputFolder, fileName));
     }
 }

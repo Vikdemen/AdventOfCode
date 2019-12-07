@@ -13,25 +13,25 @@ namespace AdventOfCode
         //when we receive instructions as a string, we build a path, containing all points except start
         public Wire(string input)
         {
-            Instruction[] instructions = ParseInstructions(input);
+            WireInstruction[] instructions = ParseInstructions(input);
             MakePath(instructions);
         }
 
         //parses a string to an array of instructions
         //each instruction has direction and number of steps
-        private Instruction[] ParseInstructions(string input)
+        private WireInstruction[] ParseInstructions(string input)
         {
             string[] instructionStrings = input.Split(new char[] {','});
-            var instructions = new Instruction[instructionStrings.Length];
+            var instructions = new WireInstruction[instructionStrings.Length];
             for (int i = 0; i < instructionStrings.Length; i++)
             {
-                instructions[i] = new Instruction(instructionStrings[i]);
+                instructions[i] = new WireInstruction(instructionStrings[i]);
             }
             return instructions;
         }
 
         //gives us a set of nodes passed by wires
-        private void MakePath(Instruction[] instructions)
+        private void MakePath(WireInstruction[] instructions)
         {
             Point point = new Point(0, 0);
             foreach (var instruction in instructions)
@@ -43,13 +43,13 @@ namespace AdventOfCode
         }
 
         //executes a command
-        private Point[] Execute(Instruction instruction, Point start)
+        private Point[] Execute(WireInstruction wireInstruction, Point start)
         {
-            Point[] path = new Point[instruction.Distance];
+            Point[] path = new Point[wireInstruction.Distance];
             Point node = start;
-            for (int i = 0; i < instruction.Distance; i++)
+            for (int i = 0; i < wireInstruction.Distance; i++)
             {
-                node = Step(instruction.Direction, node);
+                node = Step(wireInstruction.Direction, node);
                 path[i] = node;
             }
 
@@ -118,13 +118,13 @@ namespace AdventOfCode
     }
 
     //represents the instruction for the wire layer
-    public struct Instruction
+    public struct WireInstruction
     {
         public readonly char Direction;
         public readonly int Distance;
 
         //parses the instruction in string form
-        public Instruction(string instructionString)
+        public WireInstruction(string instructionString)
         {
             Direction = instructionString[0];
             Distance = int.Parse(instructionString.Substring(1));
