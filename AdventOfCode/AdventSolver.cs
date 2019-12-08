@@ -8,7 +8,7 @@ namespace AdventOfCode
 {
     public static class AdventSolver
     {
-        private const string inputFolder = @"C:\AdventOfCode\";
+        private const string inputFolder = @"AdventData\";
 
         public static void Main(string[] args)
         {
@@ -27,39 +27,22 @@ namespace AdventOfCode
         {
             if (commandDictionary.TryGetValue(commandName, out Command command))
             {
-                switch (command)
+                return command switch
                 {
-                    case Command.CalculateFuel:
-                        return SolvePuzzle(new FuelCalculator {fuelForFuel = false});
-                    case Command.FuelForFuel:
-                        return SolvePuzzle(new FuelCalculator {fuelForFuel = true});
-                    case Command.ProgramAlarm:
-                        return SolvePuzzle(new ProgramAlarm());
-                    case Command.GravityAssist:
-                        return SolvePuzzle(new GravityAssist());
-                    case Command.CrossedWires:
-                        return SolvePuzzle(new IntersectionDistanceChecker());
-                    case Command.SignalDelay:
-                        return SolvePuzzle(new DelayMeasurer());
-                    case Command.CheckPasswords:
-                        return SolvePuzzle(new PasswordValidator {additionalTest = false});
-                    case Command.CheckPasswordsNew:
-                        return SolvePuzzle(new PasswordValidator {additionalTest = true});
-                    case Command.TestSystem:
-                        return SolvePuzzle(new Diagnostics {InputInstruction = 1});
-                    case Command.TestRadiator:
-                        return SolvePuzzle(new Diagnostics {InputInstruction = 5});
-                    case Command.Help:
-                        //TODO - list all commands
-                        return "I'm helping!";
-                    case Command.Exit:
-                        Environment.Exit(0);
-                        return "Exiting program";
-                    //yep, it will never show that message
-                    default:
-                        return "Invalid command";
-                }
-                    
+                    Command.CalculateFuel => SolvePuzzle(new FuelCalculator {fuelForFuel = false}),
+                    Command.FuelForFuel => SolvePuzzle(new FuelCalculator {fuelForFuel = true}),
+                    Command.ProgramAlarm => SolvePuzzle(new ProgramAlarm()),
+                    Command.GravityAssist => SolvePuzzle(new GravityAssist()),
+                    Command.CrossedWires => SolvePuzzle(new IntersectionDistanceChecker()),
+                    Command.SignalDelay => SolvePuzzle(new DelayMeasurer()),
+                    Command.CheckPasswords => SolvePuzzle(new PasswordValidator {additionalTest = false}),
+                    Command.CheckPasswordsNew => SolvePuzzle(new PasswordValidator {additionalTest = true}),
+                    Command.TestSystem => SolvePuzzle(new Diagnostics {InputInstruction = 1}),
+                    Command.TestRadiator => SolvePuzzle(new Diagnostics {InputInstruction = 5}),
+                    Command.Help => ListCommands(),
+                    Command.Exit => Exit(),
+                    _ => "Invalid command"
+                };
             }
             return "Unknown command, please print help for command list";
         }
@@ -71,8 +54,15 @@ namespace AdventOfCode
             return puzzle.ResultText;
         }
 
+        private static string Exit()
+        {
+            Environment.Exit(0);
+            return string.Empty;
+        }
+
         public static string[] ReadFile(string fileName, string folder = inputFolder)
-            => System.IO.File.ReadAllLines(string.Concat(inputFolder, fileName));
+            => System.IO.File.ReadAllLines
+                (string.Concat(inputFolder, fileName));
         
         private enum Command
         {
@@ -88,6 +78,17 @@ namespace AdventOfCode
             TestRadiator,
             Help,
             Exit
+        }
+
+        private static string ListCommands()
+        {
+            List<string> commandNames = new List<string>(commandDictionary.Keys);
+            foreach (string commandName in commandNames)
+            {
+                Console.WriteLine(commandName);
+            }
+
+            return string.Empty;
         }
 
         private static readonly IDictionary<string, Command> commandDictionary = new Dictionary<string, Command>
