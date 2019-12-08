@@ -5,7 +5,7 @@
         protected abstract string InputFile { get; }
         //hardcoded in child classes for now
 
-        public string[] PuzzleInput { get; protected set; }
+        public string[] PuzzleInput { get; set; }
         
         public abstract string ResultText { get; }
         public int Result { get; protected set; }

@@ -53,6 +53,7 @@
     <Compile Include="Puzzles\Day3.cs" />
     <Compile Include="Puzzles\Day4.cs" />
     <Compile Include="Puzzles\Day5.cs" />
+    <Compile Include="Puzzles\Day7.cs" />
     <Compile Include="Puzzles\Puzzle.cs" />
     <Compile Include="Rocket.cs" />
     <Compile Include="Wire.cs" />

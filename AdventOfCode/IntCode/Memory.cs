@@ -17,7 +17,14 @@ namespace AdventOfCode
 
         private int pointer;
         public bool Halted { get; private set; } = false;
-        public int Input { get; set; }
+
+        private readonly Queue<int> inputQueue = new Queue<int>();
+        public int Input
+        {
+            get => inputQueue.Dequeue();
+            set => inputQueue.Enqueue(value);
+        }
+        //important - each input value may be used only once
 
         public int Output { get; set; } = -1;
 

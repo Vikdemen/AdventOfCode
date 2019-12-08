@@ -39,6 +39,7 @@ namespace AdventOfCode
                     Command.CheckPasswordsNew => SolvePuzzle(new PasswordValidator {additionalTest = true}),
                     Command.TestSystem => SolvePuzzle(new Diagnostics {InputInstruction = 1}),
                     Command.TestRadiator => SolvePuzzle(new Diagnostics {InputInstruction = 5}),
+                    Command.AmplificationCircuit => SolvePuzzle(new AmplificationCircuit()),
                     Command.Help => ListCommands(),
                     Command.Exit => Exit(),
                     _ => "Invalid command"
@@ -61,8 +62,7 @@ namespace AdventOfCode
         }
 
         public static string[] ReadFile(string fileName, string folder = inputFolder)
-            => System.IO.File.ReadAllLines
-                (string.Concat(inputFolder, fileName));
+            => System.IO.File.ReadAllLines(string.Concat(inputFolder, fileName));
         
         private enum Command
         {
@@ -76,6 +76,7 @@ namespace AdventOfCode
             CheckPasswordsNew,
             TestSystem,
             TestRadiator,
+            AmplificationCircuit,
             Help,
             Exit
         }
@@ -103,6 +104,7 @@ namespace AdventOfCode
             ["check-passwords-new"] = Command.CheckPasswordsNew,
             ["test-system"] = Command.TestSystem,
             ["test-radiator"] = Command.TestRadiator,
+            ["amplification-circuit"] = Command.AmplificationCircuit,
             ["help"] = Command.Help,
             ["exit"] = Command.Exit
         };

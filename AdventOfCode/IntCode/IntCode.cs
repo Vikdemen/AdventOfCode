@@ -17,15 +17,19 @@ namespace AdventOfCode
 
 
         //I overloaded the Run method so it can accept both parsed and unparced instructions
-        public void Run(string unparsedInstructions, int input = 0)
+        public void Run(string unparsedInstructions, params int[] input)
         {
             int[] instructions = ParseInstructions(unparsedInstructions);
             Run(instructions, input);
         }
         
-        public void Run(int[] instructions, int input = 0)
+        public void Run(int[] instructions, params int[] input)
         {
-            MemoryBlock = new Memory(instructions) {Input = input};
+            MemoryBlock = new Memory(instructions) {};
+            foreach (int value in input)
+            {
+                MemoryBlock.Input = value;
+            }
             while (!MemoryBlock.Halted)
             { 
                 Process();
@@ -43,6 +47,23 @@ namespace AdventOfCode
         {
             string[] commands = instructions.Split(',');
             return Array.ConvertAll(commands, int.Parse);
+        }
+
+        public void ChainRun(string instructions, int chainLength, int initialInput, int[] phaseSettings)
+        {
+            int[] parsedInstructions = ParseInstructions(instructions);
+            ChainRun(parsedInstructions, chainLength, initialInput, phaseSettings);
+        }
+
+        //runs several times, using input from previous stage for the next one
+        public void ChainRun(int[] instructions, int chainLength, int initialInput, int[] phaseSettings)
+        {
+            int input = initialInput;
+            for (int i = 0; i < chainLength; i++)
+            {
+                Run(instructions, phaseSettings[i], input);
+                input = Output;
+            }
         }
 
         //iterates through combinations of instructions, looking for those which would output the target number,
