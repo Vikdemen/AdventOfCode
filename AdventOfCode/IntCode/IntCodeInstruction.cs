@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
+﻿using System.Collections.Generic;
 using static AdventOfCode.OpCodeTable;
 
 namespace AdventOfCode
@@ -16,7 +13,7 @@ namespace AdventOfCode
         private Memory memory;
         public int OpCode { get; private set; }
         private int[] parameters;
-        private bool[] parameterModes = new bool[3];
+        private readonly ParameterMode[] parameterModes = new ParameterMode[3];
 
         private OpCodeAction opCodeAction;
 
@@ -39,11 +36,19 @@ namespace AdventOfCode
             parameters = new int[numberOfParameters];
             for (int i = 0; i < numberOfParameters; i++)
             {
-                bool immediate = parameterModes[i];
-                if (immediate)
-                    parameters[i] = memory.Pointer + i + 1;
-                else
-                    parameters[i] = memory[memory.Pointer + i + 1];
+                ParameterMode parameterMode = parameterModes[i];
+                switch (parameterMode)
+                {
+                    case ParameterMode.Immediate:
+                        parameters[i] = memory.Pointer + i + 1;
+                        break;
+                    case ParameterMode.Position:
+                        parameters[i] = memory[memory.Pointer + i + 1];
+                        break;
+                    default:
+                        break;
+                        //TODO throw exception
+                }
             }
             
             //right now we have maximum 3 parameters
@@ -54,13 +59,25 @@ namespace AdventOfCode
                 instruction = instruction.PadLeft(maxParameters + 2, '0');
                 //takes last 2 digits as opcode 
                 OpCode = int.Parse(instruction.Substring(maxParameters));
-                string immediates = instruction.Remove(maxParameters);
-                parameterModes[0] = immediates[2] == '1';
-                parameterModes[1] = immediates[1] == '1';
-                parameterModes[2] = immediates[0] == '1';
+                string parameterString = instruction.Remove(maxParameters);
+                parameterModes[0] = ParseParameter(parameterString[2]);
+                parameterModes[1] = ParseParameter(parameterString[1]);
+                parameterModes[2] = ParseParameter(parameterString[0]);
+                
+                ParameterMode ParseParameter(char chr)
+                {
+                    switch (chr)
+                    {
+                        case('0'):
+                            return ParameterMode.Position;
+                        case ('1'):
+                            return ParameterMode.Immediate;
+                        default:
+                            return ParameterMode.Invalid;
+                    }
+                }
             }
-            //it parses bools wrong!
-            
+
             //in position mode, returns the pointer to value, in immediate returns the pointer to parameter itself
 
             switch (OpCode)
@@ -114,6 +131,13 @@ namespace AdventOfCode
             [7] = 3,
             [8] = 3,
             [99] = 0
+        };
+
+        private enum ParameterMode
+        {
+            Position,
+            Immediate,
+            Invalid
         };
     }
 }
