@@ -35,6 +35,7 @@ namespace AdventOfCode
                 Command.CheckPasswordsNew => SolvePuzzle(new PasswordValidator {additionalTest = true}),
                 Command.TestSystem => SolvePuzzle(new Diagnostics {InputInstruction = 1}),
                 Command.TestRadiator => SolvePuzzle(new Diagnostics {InputInstruction = 5}),
+                Command.OrbitChecksum => SolvePuzzle(new OrbitChecker()),
                 Command.Help => ListCommands(),
                 Command.Exit => Exit(),
                 Command.UnknownCommand => "Unknown command, please print help for command list",

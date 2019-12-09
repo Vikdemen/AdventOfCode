@@ -18,6 +18,7 @@ namespace AdventOfCode
             CheckPasswordsNew,
             TestSystem,
             TestRadiator,
+            OrbitChecksum,
             Help,
             Exit,
             UnknownCommand
@@ -35,6 +36,7 @@ namespace AdventOfCode
             ["check-passwords-new"] = Command.CheckPasswordsNew,
             ["test-system"] = Command.TestSystem,
             ["test-radiator"] = Command.TestRadiator,
+            ["orbit-checksum"] = Command.OrbitChecksum,
             ["help"] = Command.Help,
             ["exit"] = Command.Exit
         };
