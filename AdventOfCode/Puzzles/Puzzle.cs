@@ -12,7 +12,7 @@
 
         public void LoadData()
         {
-            PuzzleInput = AdventSolver.ReadFile(InputFile);
+            PuzzleInput = FileLoader.GetData(InputFile);
         }
 
         public void Process(string[] puzzleInput)
