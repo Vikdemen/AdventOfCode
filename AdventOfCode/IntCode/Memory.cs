@@ -1,21 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.Design;
-using System.Net.Configuration;
+﻿using System.Collections.Generic;
 
 namespace AdventOfCode
 {
     public class Memory
     {
-        public int[] MemoryRegister { get; }
-        
+        public List<int> MemoryRegister { get; }
+
         public int this[int index]
         {
             get => MemoryRegister[index];
             set => MemoryRegister[index] = value;
         }
-
-        private int pointer;
+        
         public bool Halted { get; private set; } = false;
 
         private readonly Queue<int> inputQueue = new Queue<int>();
@@ -28,18 +24,25 @@ namespace AdventOfCode
 
         public int Output { get; set; } = -1;
 
+        private int pointer;
         public int Pointer
         {
             get => pointer;
-            set => pointer = value; //Clamp(value);
+            set => pointer = Clamp(value);
         }
-        
 
         public Memory(int[] instructions)
         {
-            MemoryRegister = new int[instructions.Length];
-            instructions.CopyTo(MemoryRegister, 0);
-            //we copy the instructions, so memory modifications wouldn't change instructions
+            MemoryRegister = new List<int> (instructions);
+        }
+
+        public void Start()
+        {
+            while (!Halted)
+            { 
+                var instruction = new IntCodeInstruction(this[Pointer]);
+                instruction.Execute(this, Pointer);
+            }
         }
 
         public void Halt()
@@ -52,10 +55,9 @@ namespace AdventOfCode
         {
             if (value < 0)
                 return 0;
-            if (value > MemoryRegister.Length)
-                return MemoryRegister.Length;
+            if (value > MemoryRegister.Count)
+                return MemoryRegister.Count;
             return value;
         }
-        
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using static AdventOfCode.OpCodeTable;
 
 namespace AdventOfCode
@@ -10,134 +11,87 @@ namespace AdventOfCode
     //thousands digit, the third parameter's mode is in the ten-thousands digit, and so on. Any missing modes are 0.
     public class IntCodeInstruction
     {
-        private Memory memory;
-        public int OpCode { get; private set; }
-        private int[] parameters;
-        private readonly ParameterMode[] parameterModes = new ParameterMode[3];
+        private IntCodeOperation intCodeOperation;
+        private ParameterMode[] parameterModes;
 
-        private OpCodeAction opCodeAction;
-
-        public static IntCodeInstruction InterpretInstruction(Memory memory)
+        public IntCodeInstruction(int instruction)
         {
-            return new IntCodeInstruction(memory);
+            var parsed = ParseInstruction(instruction);
+            intCodeOperation = parsed.InstructionCodeStruct;
+            parameterModes = parsed.Modes;
+        }
+        
+        private (IntCodeOperation InstructionCodeStruct, ParameterMode[] Modes) ParseInstruction(int input)
+        {
+            const int maxParameters = 3;
+                
+            string instruction = input.ToString();
+                
+            //adds missing zeroes
+            instruction = instruction.PadLeft(maxParameters + 2, '0');
+            //takes last 2 digits as opcode, remaining are parameter modes, in reversed order
+            string opCode = instruction.Substring(maxParameters);
+            string parameters = instruction.Substring(0, maxParameters);
+                
+            IntCodeOperation instructionCode = GetOpCodeStruct(opCode);
+                
+
+            ParameterMode[] modes = ParseParameters(parameters);
+                
+            ParameterMode[] ParseParameters(string unparsedParameters)
+            {
+                ParameterMode[] parameterModes = unparsedParameters.Reverse().Select(ParseParameter).ToArray();
+                    
+                ParameterMode ParseParameter(char unparsedParameter) =>
+                    unparsedParameter switch
+                    {
+                        ('0') => ParameterMode.Position,
+                        ('1') => ParameterMode.Immediate,
+                        ('2') => ParameterMode.Relative,
+                        _ => ParameterMode.Invalid
+                    };
+                    
+                return parameterModes;
+            }
+            return (instructionCode, modes);
         }
 
-        private IntCodeInstruction(Memory memory)
+        public void Execute(Memory memory, int pointer)
         {
-            this.memory = memory;
-            //reads data from current position
-            Initialise(memory[memory.Pointer]);
+            int[] parameters = FindParameters(memory, pointer);
+            intCodeOperation.Action(memory, parameters);
         }
 
-        private void Initialise(int unparsedInstruction)
+        private int[] FindParameters(Memory memory, int instructionIndex)
         {
-            ParseInstruction(unparsedInstruction, 3);
-            int numberOfParameters = ParametersForOpCode[OpCode];
-            parameters = new int[numberOfParameters];
+            int numberOfParameters = intCodeOperation.NumberOfParameters;
+            int[] parameters = new int[numberOfParameters];
             for (int i = 0; i < numberOfParameters; i++)
             {
                 ParameterMode parameterMode = parameterModes[i];
                 switch (parameterMode)
                 {
                     case ParameterMode.Immediate:
-                        parameters[i] = memory.Pointer + i + 1;
+                        parameters[i] = instructionIndex + i + 1;
                         break;
                     case ParameterMode.Position:
-                        parameters[i] = memory[memory.Pointer + i + 1];
+                        parameters[i] = memory[instructionIndex + i + 1];
                         break;
                     default:
                         break;
-                        //TODO throw exception
-                }
-            }
-            
-            //right now we have maximum 3 parameters
-            void ParseInstruction(int input, int maxParameters)
-            {
-                string instruction = input.ToString();
-                //adds missing zeroes
-                instruction = instruction.PadLeft(maxParameters + 2, '0');
-                //takes last 2 digits as opcode 
-                OpCode = int.Parse(instruction.Substring(maxParameters));
-                string parameterString = instruction.Remove(maxParameters);
-                parameterModes[0] = ParseParameter(parameterString[2]);
-                parameterModes[1] = ParseParameter(parameterString[1]);
-                parameterModes[2] = ParseParameter(parameterString[0]);
-                
-                ParameterMode ParseParameter(char chr)
-                {
-                    switch (chr)
-                    {
-                        case('0'):
-                            return ParameterMode.Position;
-                        case ('1'):
-                            return ParameterMode.Immediate;
-                        default:
-                            return ParameterMode.Invalid;
-                    }
+                    //TODO throw exception
                 }
             }
 
-            //in position mode, returns the pointer to value, in immediate returns the pointer to parameter itself
-
-            switch (OpCode)
-            {
-                case 1:
-                    opCodeAction = Op1;
-                    break;
-                case 2:
-                    opCodeAction = Op2;
-                    break;
-                case 3:
-                    opCodeAction = Op3;
-                    break;
-                case 4:
-                    opCodeAction = Op4;
-                    break;
-                case 5:
-                    opCodeAction = Op5;
-                    break;
-                case 6:
-                    opCodeAction = Op6;
-                    break;
-                case 7:
-                    opCodeAction = Op7;
-                    break;
-                case 8:
-                    opCodeAction = Op8;
-                    break;
-                case 99:
-                    opCodeAction = Op99;
-                    break;
-                default:
-                    opCodeAction = Op99;
-                    break;
-            }
+            return parameters;
         }
-
-        public void Execute()
-        {
-            opCodeAction(memory, parameters);
-        }
-
-        private static readonly Dictionary<int, int> ParametersForOpCode = new Dictionary<int, int>()
-        {
-            [1] = 3,
-            [2] = 3,
-            [3] = 1,
-            [4] = 1,
-            [5] = 2,
-            [6] = 2,
-            [7] = 3,
-            [8] = 3,
-            [99] = 0
-        };
-
+        
         private enum ParameterMode
         {
+            Invalid,
             Position,
             Immediate,
-            Invalid
+            Relative
         };
     }
 }

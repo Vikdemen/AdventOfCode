@@ -12,10 +12,10 @@ namespace AdventOfCode
         //Encountering an unknown opcode means something went wrong.
         public Memory MemoryBlock { get; private set; }
         //a copy of instruction set, modified by OPCodes
-        public int[] MemoryRegister => MemoryBlock.MemoryRegister;
+        public int[] MemoryRegister => MemoryBlock.MemoryRegister.ToArray();
+        //provides a copy
         public int Output => MemoryBlock.Output;
-
-
+        
         //I overloaded the Run method so it can accept both parsed and unparced instructions
         public void Run(string unparsedInstructions, params int[] input)
         {
@@ -25,23 +25,12 @@ namespace AdventOfCode
         
         public void Run(int[] instructions, params int[] input)
         {
-            MemoryBlock = new Memory(instructions) {};
+            MemoryBlock = new Memory(instructions);
             foreach (int value in input)
-            {
                 MemoryBlock.Input = value;
-            }
-            while (!MemoryBlock.Halted)
-            { 
-                Process();
-            }
+            MemoryBlock.Start();
         }
-        
-        private void Process()
-        {
-            var instruction = IntCodeInstruction.InterpretInstruction(MemoryBlock);
-            instruction.Execute();
-        }
-        
+
         //turns a string into instruction and parameter array
         private int[] ParseInstructions(string instructions)
         {
