@@ -2,10 +2,10 @@
 {
     public static class FileLoader
     {
-        private const string inputFolder = @"AdventData\";
+        private const string InputFolder = @"AdventData\";
         
-        public static string[] GetData(string fileName, string folder = inputFolder)
+        public static string[] GetData(string fileName, string folder = InputFolder)
             => System.IO.File.ReadAllLines
-                (string.Concat(inputFolder, fileName));
+                (string.Concat(folder, fileName));
     }
 }
