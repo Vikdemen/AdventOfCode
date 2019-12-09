@@ -26,6 +26,7 @@ namespace AdventTest
             Assert.AreEqual(expectedFuelMass, requiredFuel);
         }
 
+        /*
         [Test]
         public void Day1Pt1()
         {
@@ -39,5 +40,6 @@ namespace AdventTest
             string resultText = AdventSolver.ExecuteCommand("fuel-for-fuel");
             StringAssert.Contains("4994396", resultText);
         }
+        */
     }
 }
