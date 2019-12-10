@@ -8,6 +8,9 @@ namespace AdventOfCode
         //class that holds references for various console commands
         public enum Command
         {
+            Help,
+            Exit,
+            UnknownCommand,
             CalculateFuel,
             FuelForFuel,
             ProgramAlarm,
@@ -19,13 +22,12 @@ namespace AdventOfCode
             TestSystem,
             TestRadiator,
             OrbitChecksum,
-            Help,
-            Exit,
-            UnknownCommand
+            TransferToSanta
         }
 
         private static readonly IDictionary<string, Command> CommandDictionary = new Dictionary<string, Command>
         {
+            ["transfer-to-santa"] = Command.TransferToSanta,
             ["calculate-fuel"] = Command.CalculateFuel,
             ["fuel-for-fuel"] = Command.FuelForFuel,
             ["program-alarm"] = Command.ProgramAlarm,

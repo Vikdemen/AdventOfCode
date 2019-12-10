@@ -41,7 +41,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdventSolver.cs" />
-    <Compile Include="Celestial.cs" />
     <Compile Include="ConsoleCommands.cs" />
     <Compile Include="FileLoader.cs" />
     <Compile Include="IntCode\IntCode.cs" />

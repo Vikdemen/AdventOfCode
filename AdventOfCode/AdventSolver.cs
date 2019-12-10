@@ -36,6 +36,7 @@ namespace AdventOfCode
                 Command.TestSystem => SolvePuzzle(new Diagnostics {InputInstruction = 1}),
                 Command.TestRadiator => SolvePuzzle(new Diagnostics {InputInstruction = 5}),
                 Command.OrbitChecksum => SolvePuzzle(new OrbitChecker()),
+                Command.TransferToSanta => SolvePuzzle(new OrbitTransferPlanner()),
                 Command.Help => ListCommands(),
                 Command.Exit => Exit(),
                 Command.UnknownCommand => "Unknown command, please print help for command list",

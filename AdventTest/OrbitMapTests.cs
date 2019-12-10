@@ -28,5 +28,31 @@ namespace AdventTest
             int result = mapper.GetCheckSum();
             Assert.AreEqual(42, result);
         }
+
+        [Test]
+        public void OrbitalTransfer()
+        {
+            string[] testMapData = {
+                "COM)B",
+                "B)C",
+                "C)D",
+                "D)E",
+                "E)F",
+                "B)G",
+                "G)H",
+                "D)I",
+                "E)J",
+                "J)K",
+                "K)L",
+                "K)YOU",
+                "I)SAN"
+            };
+            var mapper = new OrbitMapper();
+            mapper.GenerateMap(testMapData);
+            int result = mapper.CountTransfers("YOU", "SAN");
+            //we count transfers between bodies you and santa orbit
+            result -= 2;
+            Assert.AreEqual(4, result);
+        }
     }
 }
