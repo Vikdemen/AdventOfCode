@@ -1,4 +1,6 @@
-﻿namespace AdventOfCode.Puzzles
+﻿using AdventOfCode.IntCode;
+
+namespace AdventOfCode.Puzzles
 {
     public class ProgramAlarm: Puzzle, IPuzzle
     {
@@ -13,7 +15,7 @@
         public override void Process()
         {
             string commands = PuzzleInput[0];
-            IntCode computer = new IntCode();
+            Computer computer = new Computer();
             computer.Run(commands);
             Result = computer.MemoryRegister[0];
         }
@@ -37,7 +39,7 @@
         public override void Process()
         {
             string commands = PuzzleInput[0];
-            IntCode computer = new IntCode();
+            Computer computer = new Computer();
             Result = computer.FindNounVerb(commands, target);
         }
     }

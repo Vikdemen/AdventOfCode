@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using AdventOfCode;
+using AdventOfCode.IntCode;
 
 namespace AdventTest
 {
@@ -12,7 +13,7 @@ namespace AdventTest
         [TestCase(new int[] {1, 1, 1, 4, 99, 5, 6, 0, 99}, new int[] {30, 1, 1, 4, 2, 5, 6, 0, 99})]
         public void IntCodeTest(int[] input, int[] output)
         {
-            IntCode computer = new IntCode();
+            Computer computer = new Computer();
             computer.Run(input);
             int[] result = computer.MemoryRegister;
             CollectionAssert.AreEqual(output, result);
@@ -33,7 +34,7 @@ namespace AdventTest
         [TestCase("3,3,1105,-1,9,1101,0,0,12,4,12,99,1", 88, 1)]
         public void ParameterTest(string program, int input, int output)
         {
-            IntCode computer = new IntCode();
+            Computer computer = new Computer();
             computer.Run(program, input);
             int result = computer.Output;
             Assert.AreEqual(output, result);
@@ -44,7 +45,7 @@ namespace AdventTest
             8, 999, 1000, 1001)]
         public void TrinaryCheck(string program, int comparison, int less, int equal, int greater)
         {
-            IntCode computer = new IntCode();
+            Computer computer = new Computer();
             computer.Run(program, comparison - 1);
             int resultLess = computer.Output;
             computer.Run(program, comparison);

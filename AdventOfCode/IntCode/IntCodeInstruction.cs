@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using static AdventOfCode.OpCodeTable;
+﻿using System.Linq;
+using static AdventOfCode.IntCode.OpCodeTable;
 
-namespace AdventOfCode
+namespace AdventOfCode.IntCode
 {
     //Parameter modes are stored in the same value as the instruction's opcode. The opcode is a two-digit number
     //based only on the ones and tens digit of the value, that is, the opcode is the rightmost two digits of the
@@ -11,76 +10,60 @@ namespace AdventOfCode
     //thousands digit, the third parameter's mode is in the ten-thousands digit, and so on. Any missing modes are 0.
     public class IntCodeInstruction
     {
-        private IntCodeOperation intCodeOperation;
-        private ParameterMode[] parameterModes;
+        private readonly OpCode opCode;
+        private readonly ParameterMode[] parameterModes;
 
-        public IntCodeInstruction(int instruction)
+        public IntCodeInstruction(int instructionInt)
         {
-            var parsed = ParseInstruction(instruction);
-            intCodeOperation = parsed.InstructionCodeStruct;
-            parameterModes = parsed.Modes;
-        }
-        
-        private (IntCodeOperation InstructionCodeStruct, ParameterMode[] Modes) ParseInstruction(int input)
-        {
-            const int maxParameters = 3;
-                
-            string instruction = input.ToString();
-                
-            //adds missing zeroes
-            instruction = instruction.PadLeft(maxParameters + 2, '0');
+            string instruction = instructionInt.ToString();
             //takes last 2 digits as opcode, remaining are parameter modes, in reversed order
-            string opCode = instruction.Substring(maxParameters);
-            string parameters = instruction.Substring(0, maxParameters);
-                
-            IntCodeOperation instructionCode = GetOpCodeStruct(opCode);
-                
+            //instruction can be only 1 digit long, then we add zero to them
+            if (instruction.Length < 2)
+                instruction = instruction.PadLeft(2, '0');
+            string opCodeString = instruction.Substring(instruction.Length - 2);
+            opCode = GetOpCode(opCodeString);
+            
+            //first you need to parse opCode to get number of parameters
+            string parameters = instruction.Substring(0, instruction.Length - 2);
+            //adds missing zeroes to parameter string
+            parameters = parameters.PadLeft(opCode.NumberOfParameters, '0');
+            //order is reversed
+            ParameterMode[] modes = parameters.Reverse().Select(IntToMode).ToArray();
+            
+            ParameterMode IntToMode(char modeID) =>
+                modeID switch
+                {
+                    ('0') => ParameterMode.Position,
+                    ('1') => ParameterMode.Immediate,
+                    ('2') => ParameterMode.Relative,
+                    _ => ParameterMode.Invalid
+                };
 
-            ParameterMode[] modes = ParseParameters(parameters);
-                
-            ParameterMode[] ParseParameters(string unparsedParameters)
-            {
-                ParameterMode[] parameterModes = unparsedParameters.Reverse().Select(ParseParameter).ToArray();
-                    
-                ParameterMode ParseParameter(char unparsedParameter) =>
-                    unparsedParameter switch
-                    {
-                        ('0') => ParameterMode.Position,
-                        ('1') => ParameterMode.Immediate,
-                        ('2') => ParameterMode.Relative,
-                        _ => ParameterMode.Invalid
-                    };
-                    
-                return parameterModes;
-            }
-            return (instructionCode, modes);
+            parameterModes = modes;
         }
 
         public void Execute(Memory memory, int pointer)
         {
             int[] parameters = FindParameters(memory, pointer);
-            intCodeOperation.Action(memory, parameters);
+            opCode.Action(memory, parameters);
         }
 
         private int[] FindParameters(Memory memory, int instructionIndex)
         {
-            int numberOfParameters = intCodeOperation.NumberOfParameters;
-            int[] parameters = new int[numberOfParameters];
-            for (int i = 0; i < numberOfParameters; i++)
+            int[] parameters = parameterModes.Select(ValueByMode).ToArray();
+            
+            int ValueByMode(ParameterMode mode, int index)
             {
-                ParameterMode parameterMode = parameterModes[i];
-                switch (parameterMode)
+                int number = index + 1;
+                int value = mode switch
                 {
-                    case ParameterMode.Immediate:
-                        parameters[i] = instructionIndex + i + 1;
-                        break;
-                    case ParameterMode.Position:
-                        parameters[i] = memory[instructionIndex + i + 1];
-                        break;
-                    default:
-                        break;
-                    //TODO throw exception
-                }
+                    ParameterMode.Immediate => (instructionIndex + number),
+                    ParameterMode.Position => memory[instructionIndex + number],
+                    ParameterMode.Relative => memory[instructionIndex + number],
+                    //implement relative
+                    _ => 0
+                };
+                return value;
             }
 
             return parameters;

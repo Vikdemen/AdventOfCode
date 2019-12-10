@@ -1,22 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Threading;
 
-namespace AdventOfCode
+namespace AdventOfCode.IntCode
 {
-    public class IntCode
+    public class Computer
     {
         //An Intcode program is a list of integers separated by commas (like 1,0,0,3,99). To run one, start by looking
         //at the first integer (called position 0). Here, you will find an opcode - either 1, 2, or 99. The opcode
         //indicates what to do; for example, 99 means that the program is finished and should immediately halt.
         //Encountering an unknown opcode means something went wrong.
-        public Memory MemoryBlock { get; private set; }
-        //a copy of instruction set, modified by OPCodes
-        public int[] MemoryRegister => MemoryBlock.MemoryRegister.ToArray();
-        //provides a copy
-        public int Output => MemoryBlock.Output;
+        private Memory memoryBlock;
+        public int[] MemoryRegister => memoryBlock.MemoryRegister.ToArray();
+        //provides a copy, so you can't manipulate memory directly
+        public int Output => memoryBlock.Output;
         
-        //I overloaded the Run method so it can accept both parsed and unparced instructions
+        //I overloaded the Run method so it can accept both parsed and unparsed instructions
         public void Run(string unparsedInstructions, params int[] input)
         {
             int[] instructions = ParseInstructions(unparsedInstructions);
@@ -25,10 +22,10 @@ namespace AdventOfCode
         
         public void Run(int[] instructions, params int[] input)
         {
-            MemoryBlock = new Memory(instructions);
+            memoryBlock = new Memory(instructions);
             foreach (int value in input)
-                MemoryBlock.Input = value;
-            MemoryBlock.Start();
+                memoryBlock.Input = value;
+            memoryBlock.Start();
         }
 
         //turns a string into instruction and parameter array
@@ -68,7 +65,7 @@ namespace AdventOfCode
                     instructions[1] = noun;
                     instructions[2] = verb;
                     Run(instructions);
-                    int output = MemoryBlock[0];
+                    int output = memoryBlock[0];
                     if (output == target)
                     {
                         return noun * 100 + verb;

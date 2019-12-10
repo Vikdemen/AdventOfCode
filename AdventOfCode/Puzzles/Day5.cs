@@ -1,4 +1,6 @@
-﻿namespace AdventOfCode.Puzzles
+﻿using AdventOfCode.IntCode;
+
+namespace AdventOfCode.Puzzles
 {
     public class Diagnostics : Puzzle, IPuzzle
     {
@@ -11,8 +13,8 @@
         //--- Part Two ---
         //This time, when the TEST diagnostic program runs its input instruction to get the ID of the system to test,
         //provide it 5, the ID for the ship's thermal radiator controller. This diagnostic test suite only outputs one
-        //number, the diagnostic code.
-        //What is the diagnostic code for system ID 5?
+        //number, the diagnostic codeId.
+        //What is the diagnostic codeId for system ID 5?
         
         protected override string InputFile => "day5.txt";
         public override string ResultText => $"Diagnostic code is {Result.ToString()}";
@@ -22,7 +24,7 @@
         public override void Process()
         {
             string instructions = PuzzleInput[0];
-            var computer = new IntCode();
+            var computer = new Computer();
             computer.Run(instructions, InputInstruction);
             int code = computer.Output;
         }

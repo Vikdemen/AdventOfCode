@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using AdventOfCode.IntCode;
 
 namespace AdventOfCode.Puzzles
 {
@@ -17,7 +18,7 @@ namespace AdventOfCode.Puzzles
         public override void Process()
         {
             string instuctions = PuzzleInput[0];
-            IntCode amplifier = new IntCode();
+            Computer amplifier = new Computer();
             var phaseSettingsVariants = GeneratePhaseSettings();
             int largestSignal = 0;
             foreach (var variant in phaseSettingsVariants)

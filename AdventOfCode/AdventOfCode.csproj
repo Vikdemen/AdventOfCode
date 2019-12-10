@@ -43,9 +43,10 @@
     <Compile Include="AdventSolver.cs" />
     <Compile Include="ConsoleCommands.cs" />
     <Compile Include="FileLoader.cs" />
-    <Compile Include="IntCode\IntCode.cs" />
+    <Compile Include="IntCode\Computer.cs" />
     <Compile Include="IntCode\IntCodeInstruction.cs" />
     <Compile Include="IntCode\Memory.cs" />
+    <Compile Include="IntCode\OpCode.cs" />
     <Compile Include="IntCode\OpCodeTable.cs" />
     <Compile Include="OrbitMapper.cs" />
     <Compile Include="Password.cs" />

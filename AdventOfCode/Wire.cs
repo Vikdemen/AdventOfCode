@@ -9,7 +9,6 @@ namespace AdventOfCode
         private List<Point> Path { get; } = new List<Point>();
         //we consider coordinates of central port to be 0, 0
         //but do not include them in path
-        //maybe switch to linked list?
 
         //when we receive instructions as a string, we build a path, containing all points except start
         public Wire(string input)

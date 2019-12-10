@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using AdventOfCode;
+using AdventOfCode.IntCode;
 using AdventOfCode.Puzzles;
 
 namespace AdventTest
@@ -14,7 +15,7 @@ namespace AdventTest
         [TestCase("3,15,3,16,1002,16,10,16,1,16,15,15,4,15,99,0,0", new[]{4,3,2,1,0}, 43210)]
         public void CheckMaxSignal(string instructions, int[] sequence, int signal)
         {
-            IntCode amplifier = new IntCode();
+            Computer amplifier = new Computer();
             amplifier.ChainRun(instructions, 5, 0, sequence);
             int result = amplifier.Output;
             Assert.AreEqual(signal, result);
