@@ -58,8 +58,8 @@ namespace AdventOfCode
             {
                 Console.WriteLine(commandName);
             }
-
-            return string.Empty;
+            return "...";
+            //TODO - rewrite it so it returns a single string with line breaks
         }
     }
 }

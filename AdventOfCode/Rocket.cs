@@ -1,4 +1,7 @@
-﻿namespace AdventOfCode
+﻿using System.Collections.Generic;
+using System.Linq;
+
+namespace AdventOfCode
 {
     public static class Rocket
     {
@@ -7,15 +10,9 @@
         //module, take its mass, divide by three, round down, and subtract 2.
         
         //given an array of module mass, calculates total fuel requirements
-        public static int FuelForModules(int[] data)
+        public static int FuelForModules(IEnumerable<int> data)
         {
-            int totalFuel = 0;
-            foreach (int moduleMass in data)
-            {
-                totalFuel += FuelForModule(moduleMass);
-            }
-
-            return totalFuel;
+            return data.Sum(FuelForModule);
         }
         
         //Fuel itself requires fuel just like a module - take its mass, divide by three, round down, and subtract 2.
@@ -28,14 +25,9 @@
         //account the mass of the added fuel? (Calculate the fuel requirements for each module separately,
         //then add them all up at the end.)
 
-        public static int FuelForModulesRecursive(int[] data)
+        public static int FuelForModulesRecursive(IEnumerable<int> data)
         {
-            int totalFuel = 0;
-            foreach (int moduleMass in data)
-            {
-                totalFuel += FuelForModuleRecursive(moduleMass);
-            }
-            return totalFuel;
+            return data.Sum(FuelForModuleRecursive);
         }
 
         //calculates the fuel mass itself

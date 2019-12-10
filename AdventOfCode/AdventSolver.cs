@@ -7,7 +7,7 @@ namespace AdventOfCode
     public static class AdventSolver
     {
         private static bool continueInput = true;
-        public static void Main(string[] args)
+        public static void Main()
         {
             while (continueInput)
             {
@@ -15,12 +15,14 @@ namespace AdventOfCode
                 string result = ExecuteCommand(command);
                 Console.WriteLine(result);
             }
+            Console.Write("Program finished, exiting");
+            Console.ReadKey();
             //infinite loop of input
             //break it by using "exit" command;
         }
 
-        //chooses a command based on input
-        public static string ExecuteCommand(string commandName)
+        //chooses a command based on input, executes it and returns result.
+        private static string ExecuteCommand(string commandName)
         {
             Command command = GetCommand(commandName);
             return command switch
@@ -53,8 +55,8 @@ namespace AdventOfCode
 
         private static string Exit()
         {
-            Environment.Exit(0);
-            return string.Empty;
+            continueInput = false;
+            return "Exiting program";
         }
         
     }

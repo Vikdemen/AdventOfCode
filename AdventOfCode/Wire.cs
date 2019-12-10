@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 
 namespace AdventOfCode
 {
     public class Wire
     {
-        public List<Point> Path { get; } = new List<Point>();
+        private List<Point> Path { get; } = new List<Point>();
         //we consider coordinates of central port to be 0, 0
+        //but do not include them in path
+        //maybe switch to linked list?
 
         //when we receive instructions as a string, we build a path, containing all points except start
         public Wire(string input)
@@ -21,7 +22,7 @@ namespace AdventOfCode
         //each instruction has direction and number of steps
         private WireInstruction[] ParseInstructions(string input)
         {
-            string[] instructionStrings = input.Split(new char[] {','});
+            string[] instructionStrings = input.Split(',');
             var instructions = new WireInstruction[instructionStrings.Length];
             for (int i = 0; i < instructionStrings.Length; i++)
             {
@@ -31,51 +32,42 @@ namespace AdventOfCode
         }
 
         //gives us a set of nodes passed by wires
-        private void MakePath(WireInstruction[] instructions)
+        private void MakePath(IEnumerable<WireInstruction> instructions)
         {
-            Point point = new Point(0, 0);
-            foreach (var instruction in instructions)
+            var end = new Point(0, 0);
+            foreach (WireInstruction instruction in instructions)
             { 
-                Point[] pathPart = Execute(instruction, point);
-                point = pathPart.Last();
-                Path.AddRange(pathPart);
+                AddWireSegment(instruction, end);
+                end = Path.Last();
             }
         }
 
-        //executes a command
-        private Point[] Execute(WireInstruction wireInstruction, Point start)
+        //adds a segment for wire based on instruction
+        private void AddWireSegment(WireInstruction wireInstruction, Point start)
         {
-            Point[] path = new Point[wireInstruction.Distance];
+            var segment = new Point[wireInstruction.Distance];
             Point node = start;
             for (int i = 0; i < wireInstruction.Distance; i++)
             {
-                node = Step(wireInstruction.Direction, node);
-                path[i] = node;
+                node = Step(wireInstruction.WireDirection, node);
+                segment[i] = node;
             }
 
             //returns a neighbouring point
-            Point Step(char dir, Point origin)
+            Point Step(Direction direction, Point origin)
             {
-                switch (dir)
+                return direction switch
                 {
-                    case 'R':
-                        return new Point(origin.X + 1, origin.Y);
-                        break;
-                    case 'L':
-                        return new Point(origin.X - 1, origin.Y);
-                        break;
-                    case 'U':
-                        return new Point(origin.X, origin.Y + 1);
-                        break;
-                    case 'D':
-                        return new Point(origin.X, origin.Y - 1);
-                        break;
-                    default:
-                        Console.WriteLine("Invalid input");
-                        return new Point(0, 0);
-                }
+                    Direction.Right => new Point(origin.X + 1, origin.Y),
+                    Direction.Left => new Point(origin.X - 1, origin.Y),
+                    Direction.Up => new Point(origin.X, origin.Y + 1),
+                    Direction.Down => new Point(origin.X, origin.Y - 1),
+                    _ => new Point (origin.X, origin.Y)
+                    //TODO - throw exception
+                    //for invalid input
+                };
             }
-            return path;
+            Path.AddRange(segment);
         }
 
         //returns all points where 2 wires intersect
@@ -84,23 +76,11 @@ namespace AdventOfCode
 
         public static int SignalDelay(Wire wire0, Wire wire1, Point intersection)
             => wire0.Path.IndexOf(intersection) + 1 + wire1.Path.IndexOf(intersection) + 1;
-
-        //returns the manhattan distance of closest to origin intersection
-        public static int GetClosest(List<Point> intersections)
-        {
-            if (intersections.Count == 0)
-                return -1;
-            //if the wires do not intersect
-            int closest = intersections[0].ManhattanDistance;
-            foreach (Point intersection in intersections)
-            {
-                int distance = intersection.ManhattanDistance;
-                if (distance < closest)
-                    closest = distance;
-            }
-
-            return closest;
-        }
+        
+        //returns manhattan distance of intersection closest to origin
+        //if the wires do not intersect, returns -1
+        public static int GetClosest(List<Point> intersections) =>
+            intersections.Any() ? intersections.Min(point => point.ManhattanDistance) : -1;
     }
 
     //represents the cartesian coordinates of wire node
@@ -120,14 +100,27 @@ namespace AdventOfCode
     //represents the instruction for the wire layer
     public struct WireInstruction
     {
-        public readonly char Direction;
+        public readonly Direction WireDirection;
         public readonly int Distance;
 
         //parses the instruction in string form
+        //doesn't filter for invalid input
         public WireInstruction(string instructionString)
         {
-            Direction = instructionString[0];
+            char wireDirection = instructionString[0];
+            WireDirection = wireDirection switch
+            {
+                'U' => Direction.Up,
+                'D' => Direction.Down,
+                'R' => Direction.Right,
+                'L' => Direction.Left,
+                _ => Direction.Invalid
+            };
+
             Distance = int.Parse(instructionString.Substring(1));
         }
     }
+
+    public enum Direction
+    { Up, Down, Right, Left, Invalid };
 }
