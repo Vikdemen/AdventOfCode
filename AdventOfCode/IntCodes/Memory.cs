@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace AdventOfCode.IntCode
+namespace AdventOfCode.IntCodes
 {
     public class Memory
     {

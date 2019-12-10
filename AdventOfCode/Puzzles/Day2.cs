@@ -1,4 +1,4 @@
-﻿using AdventOfCode.IntCode;
+﻿using AdventOfCode.IntCodes;
 
 namespace AdventOfCode.Puzzles
 {
@@ -11,17 +11,26 @@ namespace AdventOfCode.Puzzles
         //at position 0 after the program halts?
         protected override string InputFile => "day2.txt";
         public override string ResultText => $"Program finished, {Result.ToString()}" ;
+        protected Computer PuzzleComputer { get; set; }
+        protected string Commands { get; set; }
 
-        public override void Process()
+        public override void Solve()
         {
-            string commands = PuzzleInput[0];
-            Computer computer = new Computer();
-            computer.Run(commands);
-            Result = computer.MemoryRegister[0];
+            Commands = PuzzleInput[0];
+            PuzzleComputer = new Computer();
+            //TODO - add input-changing code
+            Result = RunComputer();
+        }
+
+        protected virtual int RunComputer()
+        {
+            PuzzleComputer.Run(Commands);
+            int result = PuzzleComputer.MemoryRegister[0];
+            return result;
         }
     }
 
-    public class GravityAssist: Puzzle, IPuzzle
+    public class GravityAssist: ProgramAlarm
     {
         //--- Part Two ---
         //To complete the gravity assist, you need to determine what pair of inputs produces the output 19690720.
@@ -32,16 +41,10 @@ namespace AdventOfCode.Puzzles
         //pair of inputs, make sure you first reset the computer's memory to the values in the program (your puzzle
         //input) - in other words, don't reuse memory from a previous attempt.
         //Find the input noun and verb that cause the program to produce the output 19690720. What is 100 * noun + verb?
-        protected override string InputFile => "day2.txt";
         public override string ResultText => $"You need to input {Result.ToString()}" ;
-        private int target = 19690720;
+        public int Target { get; set; } = 19690720;
 
-        public override void Process()
-        {
-            string commands = PuzzleInput[0];
-            Computer computer = new Computer();
-            Result = computer.FindNounVerb(commands, target);
-        }
+        protected override int RunComputer() => PuzzleComputer.FindNounVerb(Commands, Target);
     }
 
 }

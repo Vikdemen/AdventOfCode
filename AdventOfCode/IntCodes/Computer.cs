@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AdventOfCode.IntCode
+namespace AdventOfCode.IntCodes
 {
     public class Computer
     {

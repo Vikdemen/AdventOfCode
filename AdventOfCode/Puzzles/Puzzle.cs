@@ -19,7 +19,7 @@
         {
             PuzzleInput = puzzleInput;
         }
-        public abstract void Process();
+        public abstract void Solve();
     }
 
     public interface IPuzzle
@@ -27,6 +27,6 @@
         string ResultText { get; }
         int Result { get; }
         void LoadData();
-        void Process();
+        void Solve();
     }
 }

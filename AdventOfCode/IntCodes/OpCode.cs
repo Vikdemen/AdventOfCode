@@ -1,6 +1,6 @@
-﻿using static AdventOfCode.IntCode.OpCodeTable;
+﻿using static AdventOfCode.IntCodes.OpCodeTable;
 
-namespace AdventOfCode.IntCode
+namespace AdventOfCode.IntCodes
 {
     public class OpCode
     {

@@ -1,4 +1,5 @@
 ﻿using System;
+using AdventOfCode.Passwords;
 using AdventOfCode.Puzzles;
 using static AdventOfCode.ConsoleCommands;
 
@@ -27,14 +28,14 @@ namespace AdventOfCode
             Command command = GetCommand(commandName);
             return command switch
             {
-                Command.CalculateFuel => SolvePuzzle(new FuelCalculator {fuelForFuel = false}),
-                Command.FuelForFuel => SolvePuzzle(new FuelCalculator {fuelForFuel = true}),
+                Command.CalculateFuel => SolvePuzzle(new FuelCalculator ()),
+                Command.FuelForFuel => SolvePuzzle(new FuelForFuelCalculator()),
                 Command.ProgramAlarm => SolvePuzzle(new ProgramAlarm()),
                 Command.GravityAssist => SolvePuzzle(new GravityAssist()),
                 Command.CrossedWires => SolvePuzzle(new IntersectionDistanceChecker()),
                 Command.SignalDelay => SolvePuzzle(new DelayMeasurer()),
-                Command.CheckPasswords => SolvePuzzle(new PasswordValidator {additionalTest = false}),
-                Command.CheckPasswordsNew => SolvePuzzle(new PasswordValidator {additionalTest = true}),
+                Command.CheckPasswords => SolvePuzzle(new ValidPasswordCounter()),
+                Command.CheckPasswordsNew => SolvePuzzle(new ValidPasswordCounter(new AdvancedPasswordValidator())),
                 Command.TestSystem => SolvePuzzle(new Diagnostics {InputInstruction = 1}),
                 Command.TestRadiator => SolvePuzzle(new Diagnostics {InputInstruction = 5}),
                 Command.OrbitChecksum => SolvePuzzle(new OrbitChecker()),
@@ -49,7 +50,7 @@ namespace AdventOfCode
         private static string SolvePuzzle(IPuzzle puzzle)
         {
             puzzle.LoadData();
-            puzzle.Process();
+            puzzle.Solve();
             return puzzle.ResultText;
         }
 

@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using AdventOfCode.IntCode;
+using AdventOfCode.IntCodes;
 
 namespace AdventOfCode.Puzzles
 {
@@ -15,7 +15,7 @@ namespace AdventOfCode.Puzzles
         private int numberOfAmplifiers = 5;
         private int initialInput = 0;
 
-        public override void Process()
+        public override void Solve()
         {
             string instuctions = PuzzleInput[0];
             Computer amplifier = new Computer();

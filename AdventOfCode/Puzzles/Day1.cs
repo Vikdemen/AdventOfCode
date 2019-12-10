@@ -9,6 +9,19 @@ namespace AdventOfCode.Puzzles
         //module, take its mass, divide by three, round down, and subtract 2.
         //What is the sum of the fuel requirements for all of the modules on your spacecraft?
         
+        
+        
+        protected override string InputFile => "day1.txt";
+        public override string ResultText => $"We need {Result.ToString()} fuel in total";
+
+        public override void Solve()
+        {
+            Result = Rocket.FuelForModules(Array.ConvertAll(PuzzleInput, int.Parse));
+        }
+    }
+
+    public class FuelForFuelCalculator : FuelCalculator
+    {
         //--- Part Two ---
         //Fuel itself requires fuel just like a module - take its mass, divide by three, round down, and subtract 2.
         //However, that fuel also requires fuel, and that fuel requires fuel, and so on. Any mass that would require
@@ -17,17 +30,9 @@ namespace AdventOfCode.Puzzles
         //What is the sum of the fuel requirements for all of the modules on your spacecraft when also taking into
         //account the mass of the added fuel? (Calculate the fuel requirements for each module separately, then add them
         //all up at the end.)
-        
-        protected override string InputFile => "day1.txt";
-        public override string ResultText => $"We need {Result.ToString()} fuel in total";
-        public bool fuelForFuel;
-
-        public override void Process()
+        public override void Solve()
         {
-            if (fuelForFuel)
-                Result = Rocket.FuelForModulesRecursive(Array.ConvertAll(PuzzleInput, int.Parse));
-            else
-                Result = Rocket.FuelForModules(Array.ConvertAll(PuzzleInput, int.Parse));
+            Result = Rocket.FuelForModulesRecursive(Array.ConvertAll(PuzzleInput, int.Parse));
         }
     }
 }

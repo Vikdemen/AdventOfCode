@@ -1,4 +1,7 @@
-﻿namespace AdventOfCode.Puzzles
+﻿using System.Collections.Generic;
+using System.Linq;
+
+namespace AdventOfCode.Puzzles
 {
     public class IntersectionDistanceChecker: Puzzle, IPuzzle
     {
@@ -13,15 +16,22 @@
         //What is the Manhattan distance from the central port to the closest intersection?
         protected override string InputFile => "day3.txt";
         public override string ResultText => $"Distance to closest intersection is {Result.ToString()}";
-        public override void Process()
+
+        protected Wire Wire0;
+        protected Wire Wire1;
+        
+        public override void Solve()
         {
-            Wire wire0 = new Wire(PuzzleInput[0]);
-            Wire wire1 = new Wire(PuzzleInput[1]);
-            Result = Wire.GetClosest(Wire.Intersect(wire0, wire1));
+            Wire0 = new Wire(PuzzleInput[0]);
+            Wire1 = new Wire(PuzzleInput[1]);
+            Result = Calculate();
         }
+
+        protected virtual int Calculate() =>
+            Wire.GetClosest(Wire.Intersect(Wire0, Wire1));
     }
 
-    public class DelayMeasurer: Puzzle, IPuzzle
+    public class DelayMeasurer: IntersectionDistanceChecker
     {
         //It turns out that this circuit is very timing-sensitive; you actually need to minimize the signal delay.
         //To do this, calculate the number of steps each wire takes to reach each intersection; choose the intersection
@@ -31,23 +41,16 @@
         //The number of steps a wire takes is the total number of grid squares the wire has entered to get to that
         //location, including the intersection being considered.
         //What is the fewest combined steps the wires must take to reach an intersection?
-        protected override string InputFile => "day3.txt";
         public override string ResultText => $"Smallest signal delay is {Result.ToString()}";
-        public override void Process()
+        protected override int Calculate()
         {
-            Wire wire0 = new Wire(PuzzleInput[0]);
-            Wire wire1 = new Wire(PuzzleInput[1]);
-            var intersections = Wire.Intersect(wire0, wire1);
-            int result = 100500;
-            //arbitrary large number
-            foreach (var intersection in intersections)
-            {
-                int delay = Wire.SignalDelay(wire0, wire1, intersection);
-                if (delay < result)
-                    result = delay;
-            }
+            List<Point> intersections = Wire.Intersect(Wire0, Wire1);
+            int result = intersections.Select(GetDelay).Min();
 
-            Result = result;
+            int GetDelay(Point intersection) =>
+                Wire.SignalDelay(Wire0, Wire1, intersection);
+
+            return result;
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
 using AdventOfCode;
-using AdventOfCode.IntCode;
+using AdventOfCode.IntCodes;
 
 namespace AdventTest
 {

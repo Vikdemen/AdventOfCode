@@ -1,4 +1,4 @@
-﻿using AdventOfCode.IntCode;
+﻿using AdventOfCode.IntCodes;
 
 namespace AdventOfCode.Puzzles
 {
@@ -21,7 +21,7 @@ namespace AdventOfCode.Puzzles
 
         public int InputInstruction { get; set; }
 
-        public override void Process()
+        public override void Solve()
         {
             string instructions = PuzzleInput[0];
             var computer = new Computer();

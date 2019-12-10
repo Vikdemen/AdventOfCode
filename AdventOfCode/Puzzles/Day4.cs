@@ -1,6 +1,9 @@
-﻿namespace AdventOfCode.Puzzles
+﻿using System.Linq;
+using AdventOfCode.Passwords;
+
+namespace AdventOfCode.Puzzles
 {
-    public class PasswordValidator: Puzzle, IPuzzle
+    public class ValidPasswordCounter: Puzzle, IPuzzle
     {
         //--- Day 4: Secure Container ---
         //Password is a six-digit number.
@@ -14,19 +17,34 @@
         //the two adjacent matching digits are not part of a larger group of matching digits.
         //111122 meets the criteria (even though 1 is repeated more than twice, it still contains a double 22).
         //How many different passwords within the range given in your puzzle input meet all of the criteria?
+        
         protected override string InputFile => "day4.txt";
         public override string ResultText => $"{Result.ToString()} passwords are valid";
+        protected IPasswordValidator Validator { get; set; }
+
+        public ValidPasswordCounter()
+        {
+            Validator = new PasswordValidator();
+        }
+        public ValidPasswordCounter(IPasswordValidator validator)
+        {
+            Validator = validator;
+        }
         
-        public bool additionalTest;
-        public override void Process()
+        public override void Solve()
         {
             string[] data = PuzzleInput[0].Split('-');
             int start = int.Parse(data[0]);
             int finish = int.Parse(data[1]);
-            if (additionalTest)
-                Result = Password.CountMoreValid(start, finish);
-            else
-                Result = Password.CountValid(start, finish);
+            Result = CountValid(start, finish);
         }
+
+        private int CountValid (int start, int end)
+        {
+            int count = end - start + 1;
+            int validPassCount = Enumerable.Range(start, count).Count(Validator.CheckValid);
+            return validPassCount;
+        }
+        
     }
 }

@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
 using AdventOfCode;
-using AdventOfCode.IntCode;
+using AdventOfCode.IntCodes;
 using AdventOfCode.Puzzles;
 
 namespace AdventTest
@@ -26,7 +26,7 @@ namespace AdventTest
         {
             Puzzle puzzle = new AmplificationCircuit();
             puzzle.PuzzleInput = data;
-            puzzle.Process();
+            puzzle.Solve();
             int result = puzzle.Result;
             Assert.AreEqual(signal, result);
         }

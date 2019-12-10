@@ -1,5 +1,6 @@
 ﻿using System.Xml.Schema;
 using AdventOfCode;
+using AdventOfCode.Passwords;
 using NUnit.Framework;
 
 namespace AdventTest
@@ -11,9 +12,8 @@ namespace AdventTest
         [TestCase(123789, false)]
         public void ValidityTest(int number, bool valid)
         {
-            Password password = new Password();
-            password.Input(number);
-            bool result = password.IsValid;
+            var passwordValidator = new PasswordValidator();
+            bool result = passwordValidator.CheckValid(number);
             Assert.AreEqual(valid, result);
         }
 
@@ -22,9 +22,8 @@ namespace AdventTest
         [TestCase(111122, true)]
         public void AdditionalCondition(int number, bool valid)
         {
-            Password password = new Password();
-            password.Input(number);
-            bool result = password.IsMoreValid;
+            var passwordValidator = new AdvancedPasswordValidator();
+            bool result = passwordValidator.CheckValid(number);
             Assert.AreEqual(valid, result);
         }
     }

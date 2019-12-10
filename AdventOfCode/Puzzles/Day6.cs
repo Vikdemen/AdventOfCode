@@ -10,7 +10,7 @@
         public override string ResultText => $"There are {Result.ToString()} orbits total!";
         protected OrbitMapper mapper;
         
-        public override void Process()
+        public override void Solve()
         {
             PrepareMap();
             GetResult();
