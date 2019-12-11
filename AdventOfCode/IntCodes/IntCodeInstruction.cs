@@ -57,10 +57,12 @@ namespace AdventOfCode.IntCodes
                 int number = index + 1;
                 int value = mode switch
                 {
-                    ParameterMode.Immediate => (instructionIndex + number),
+                    ParameterMode.Immediate => instructionIndex + number,
                     ParameterMode.Position => memory[instructionIndex + number],
-                    ParameterMode.Relative => memory[instructionIndex + number],
-                    //implement relative
+                    //Parameters in mode 2, relative mode, behave very similarly to parameters in position mode: the
+                    //parameter is interpreted as a position.
+                    //The address a relative mode parameter refers to is itself plus the current relative base.
+                    ParameterMode.Relative => memory[instructionIndex + number] + memory.RelativeBase,
                     _ => 0
                 };
                 return value;
