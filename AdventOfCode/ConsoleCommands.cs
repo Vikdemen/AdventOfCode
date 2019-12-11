@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using AdventOfCode.Passwords;
+using AdventOfCode.Puzzles;
 
 namespace AdventOfCode
 {
     public static class ConsoleCommands
     {
         //class that holds references for various console commands
-        public enum Command
+        public enum CommandID
         {
             Help,
             Exit,
@@ -22,44 +24,124 @@ namespace AdventOfCode
             TestSystem,
             TestRadiator,
             OrbitChecksum,
-            TransferToSanta
+            TransferToSanta,
+            CheckCorruption
         }
-
-        private static readonly IDictionary<string, Command> CommandDictionary = new Dictionary<string, Command>
-        {
-            ["transfer-to-santa"] = Command.TransferToSanta,
-            ["calculate-fuel"] = Command.CalculateFuel,
-            ["fuel-for-fuel"] = Command.FuelForFuel,
-            ["program-alarm"] = Command.ProgramAlarm,
-            ["gravity-assist"] = Command.GravityAssist,
-            ["crossed-wires"] = Command.CrossedWires,
-            ["signal-delay"] = Command.SignalDelay,
-            ["check-passwords"] = Command.CheckPasswords,
-            ["check-passwords-new"] = Command.CheckPasswordsNew,
-            ["test-system"] = Command.TestSystem,
-            ["test-radiator"] = Command.TestRadiator,
-            ["orbit-checksum"] = Command.OrbitChecksum,
-            ["help"] = Command.Help,
-            ["exit"] = Command.Exit
-        };
         
-        public static Command GetCommand(string commandName)
-        {
-            if (CommandDictionary.TryGetValue(commandName, out Command command))
-                return command;
-            else
-                return Command.UnknownCommand;
-        }
+        //returns either command from a dictionary or "unknown" command
+        public static CommandID GetCommand(string commandName) =>
+            CommandsByName.TryGetValue(commandName, out CommandID command) ? command : CommandID.UnknownCommand;
 
-        public static string ListCommands()
+        private static readonly IDictionary<string, CommandID> CommandsByName = new Dictionary<string, CommandID>
         {
-            List<string> commandNames = new List<string>(CommandDictionary.Keys);
+            ["check-corruption"] = CommandID.CheckCorruption,
+            ["transfer-to-santa"] = CommandID.TransferToSanta,
+            ["calculate-fuel"] = CommandID.CalculateFuel,
+            ["fuel-for-fuel"] = CommandID.FuelForFuel,
+            ["program-alarm"] = CommandID.ProgramAlarm,
+            ["gravity-assist"] = CommandID.GravityAssist,
+            ["crossed-wires"] = CommandID.CrossedWires,
+            ["signal-delay"] = CommandID.SignalDelay,
+            ["check-passwords"] = CommandID.CheckPasswords,
+            ["check-passwords-new"] = CommandID.CheckPasswordsNew,
+            ["test-system"] = CommandID.TestSystem,
+            ["test-radiator"] = CommandID.TestRadiator,
+            ["orbit-checksum"] = CommandID.OrbitChecksum,
+            ["help"] = CommandID.Help,
+            ["exit"] = CommandID.Exit
+        };
+
+        public delegate string CommandAction();
+
+        public static CommandAction GetAction(CommandID commandID) =>
+            ActionForCommand[commandID];
+
+        private static readonly IDictionary<CommandID, CommandAction> ActionForCommand
+            = new Dictionary<CommandID, CommandAction>
+            {
+                [CommandID.Exit] = Exit,
+                [CommandID.Help] = ListCommands,
+                [CommandID.UnknownCommand] = UnknownCommand,
+                [CommandID.CalculateFuel] = CalculateFuel,
+                [CommandID.FuelForFuel] = FuelForFuel,
+                [CommandID.ProgramAlarm] = ProgramAlarm,
+                [CommandID.GravityAssist] = GravityAssist,
+                [CommandID.CrossedWires] = CrossedWires,
+                [CommandID.SignalDelay] = SignalDelay,
+                [CommandID.CheckPasswords] = CheckPassword,
+                [CommandID.CheckPasswordsNew] = CheckPasswordNew,
+                [CommandID.TestSystem] = TestSystem,
+                [CommandID.TestRadiator] = TestRadiator,
+                [CommandID.OrbitChecksum] = OrbitCheckSum,
+                [CommandID.TransferToSanta] = TransferToSanta,
+                [CommandID.CheckCorruption] = CheckCorruption
+            };
+
+
+        private static string ListCommands()
+        {
+            List<string> commandNames = new List<string>(CommandsByName.Keys);
             foreach (string commandName in commandNames)
             {
                 Console.WriteLine(commandName);
             }
             return "...";
             //TODO - rewrite it so it returns a single string with line breaks
+        }
+
+        public static string Exit()
+        {
+            AdventSolver.ContinueInput = false;
+            return "Program finished, exiting";
+        }
+
+        private static string UnknownCommand() =>
+            "Unknown command, please print help for command list";
+
+        private static string CalculateFuel() => 
+            SolvePuzzle(new FuelCalculator());
+
+        private static string FuelForFuel() => 
+            SolvePuzzle(new FuelForFuelCalculator());
+
+        private static string ProgramAlarm() => 
+            SolvePuzzle(new ProgramAlarm());
+
+        private static string GravityAssist() => 
+            SolvePuzzle(new GravityAssist());
+
+        private static string CrossedWires() => 
+            SolvePuzzle(new IntersectionDistanceChecker());
+
+        private static string SignalDelay() => 
+            SolvePuzzle(new DelayMeasurer());
+
+        private static string CheckPassword() =>
+            SolvePuzzle(new ValidPasswordCounter());
+
+        private static string CheckPasswordNew() =>
+            SolvePuzzle(new ValidPasswordCounter(new AdvancedPasswordValidator()));
+
+        private static string TestSystem() => 
+            SolvePuzzle(new Diagnostics {InputInstruction = 1});
+
+        private static string TestRadiator() => 
+            SolvePuzzle(new Diagnostics {InputInstruction = 5});
+
+        private static string OrbitCheckSum() => 
+            SolvePuzzle(new OrbitChecker());
+
+        private static string TransferToSanta() => 
+            SolvePuzzle(new OrbitTransferPlanner());
+
+        private static string CheckCorruption() =>
+            SolvePuzzle(new SpaceImageValidator());
+
+        private static string SolvePuzzle(IPuzzle puzzle)
+        {
+            puzzle.LoadData();
+            puzzle.Solve();
+            return puzzle.ResultText;
         }
     }
 }

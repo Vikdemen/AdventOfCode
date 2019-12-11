@@ -50,6 +50,7 @@
     <Compile Include="PasswordTest.cs" />
     <Compile Include="RocketTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SpaceImageTests.cs" />
     <Compile Include="WireTest.cs" />
   </ItemGroup>
   <ItemGroup>
