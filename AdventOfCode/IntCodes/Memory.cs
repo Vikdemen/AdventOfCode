@@ -25,6 +25,8 @@ namespace AdventOfCode.IntCodes
         public int Output { get; set; } = -1;
 
         private int pointer;
+        public int RelativeBase { get; set; } = 0;
+
         public int Pointer
         {
             get => pointer;
@@ -33,7 +35,7 @@ namespace AdventOfCode.IntCodes
 
         public Memory(int[] instructions)
         {
-            MemoryRegister = new List<int> (instructions);
+            MemoryRegister = new List<int>(instructions);
         }
 
         public void Start()

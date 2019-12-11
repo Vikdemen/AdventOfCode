@@ -15,7 +15,7 @@ namespace AdventTest
         {
             Computer computer = new Computer();
             computer.Run(input);
-            int[] result = computer.MemoryRegister;
+            var result = computer.MemoryRegister;
             CollectionAssert.AreEqual(output, result);
         }
 
@@ -56,6 +56,53 @@ namespace AdventTest
             Assert.AreEqual(equal, resultEqual);
             Assert.AreEqual(greater, resultGreater);
         }
+
+        [Test]
+        public void PositionMode()
+        {
+            int testValue = 7;
+            var memory = new Memory(new [] {004, 2, testValue});
+            var intCodeInstruction = new IntCodeInstruction(004);
+            intCodeInstruction.Execute(memory, 0);
+            long result = memory.Output;
+            Assert.AreEqual(result, testValue);
+        }
+
+        [Test]
+        public void ImmediateMode()
+        {
+            int testValue = 7;
+            var memory = new Memory(new [] {004, testValue});
+            var intCodeInstruction = new IntCodeInstruction(104);
+            intCodeInstruction.Execute(memory, 0);
+            long result = memory.Output;
+            Assert.AreEqual(result, testValue);
+        }
+        
+        [Test]
+        public void RelativeMode()
+        {
+            int testValue = 7;
+            var memory = new Memory(new [] {004, 2, 0, testValue});
+            memory.RelativeBase = 1;
+            var intCodeInstruction = new IntCodeInstruction(204);
+            intCodeInstruction.Execute(memory, 0);
+            long result = memory.Output;
+            Assert.AreEqual(testValue, result);
+        }
+
+        [Test]
+        public void Op9()
+        {
+            int testValue = 77;
+            var memory = new Memory(new []{9, 2, testValue});
+            var instruction = new IntCodeInstruction(memory[0]);
+            instruction.Execute(memory,0);
+            long result = memory.RelativeBase;
+            Assert.AreEqual(testValue, result);
+        }
+        
+        
 
     }
 }

@@ -74,6 +74,16 @@ namespace AdventOfCode.IntCodes
             memory[parameters[2]] = memory[parameters[0]] == memory[parameters[1]] ? 1 : 0;
             memory.Pointer += 4;
         }
+        
+        //Opcode 9 adjusts the relative base by the value of its only parameter. The relative base increases (or
+        //decreases, if the value is negative) by the value of the parameter.
+        private static void Op9 (Memory memory, params int[] parameters)
+        {
+            memory.RelativeBase = memory[parameters[0]];
+            memory.Pointer += 2;
+        }
+        
+        
 
         private static void Op99(Memory memory, params int[] parameters)
         {
@@ -90,6 +100,7 @@ namespace AdventOfCode.IntCodes
             ["06"] = new OpCode(OpCodeID.Op6, 2, Op6),
             ["07"] = new OpCode(OpCodeID.Op7, 3, Op7),
             ["08"] = new OpCode(OpCodeID.Op8, 3, Op8),
+            ["09"] = new OpCode(OpCodeID.Op9, 1, Op9),
             ["99"] = new OpCode(OpCodeID.Op99, 0, Op99),
         };
 
@@ -105,7 +116,8 @@ namespace AdventOfCode.IntCodes
         
         public enum OpCodeID
         {
-            Op1, Op2, Op3, Op4, Op5, Op6, Op7, Op8, Op99, Invalid
+            Op1, Op2, Op3, Op4, Op5, Op6, Op7, Op8, Op99, Invalid,
+            Op9
         };
         
     }
