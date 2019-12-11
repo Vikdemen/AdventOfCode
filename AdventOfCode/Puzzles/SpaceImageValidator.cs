@@ -1,11 +1,13 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
+using AdventOfCode.SpaceImages;
 
 namespace AdventOfCode.Puzzles
 {
-    public class SpaceImageValidator: Puzzle, IPuzzle
+    public class SpaceImageValidator : Puzzle, IPuzzle
     {
         //--- Day 8: Space Image Format ---
-        
+
         //Images are sent as a series of digits that each represent the color of a single pixel. The digits fill each
         //row of the image left-to-right, then move downward to the next row, filling rows top-to-bottom until every
         //pixel of the image is filled.
@@ -21,16 +23,22 @@ namespace AdventOfCode.Puzzles
         protected override string InputFile => "day8.txt";
 
         public override string ResultText => $"Test finished. Number of 1 * 2 is {Result}";
-        
-        private int width = 25;
-        private int height = 6;
-        
+
+        protected int width = 25;
+        protected int height = 6;
+        protected SpaceImage image;
+
         public override void Solve()
         {
             string input = PuzzleInput[0];
-            var image = new SpaceImage(width, height, input);
+            image = new SpaceImage(width, height, input);
+            Result = GetResult();
+        }
+
+        public virtual int GetResult()
+        {
             var layer = image.GetLeastCorruptedLayer();
-            Result = MultiplicationCount(layer);
+            return MultiplicationCount(layer);
         }
 
         public int MultiplicationCount(int[,] layer)
@@ -40,11 +48,44 @@ namespace AdventOfCode.Puzzles
             foreach (int point in layer)
             {
                 if (point == 1)
-                    oneCount ++;
+                    oneCount++;
                 if (point == 2)
-                    twoCount ++;
+                    twoCount++;
             }
+
             return oneCount * twoCount;
+        }
+    }
+
+    public class SpaceImageReader : SpaceImageValidator
+    {
+        public override string ResultText => ShowImage();
+
+        public override int GetResult()
+        {
+
+            //doesn't really matter
+            return 0;
+        }
+
+        private string ShowImage()
+        {
+            int[,] clearImage = image.ReadImage();
+            for (int y = 0; y < height; y++)
+            {
+                string row = "";
+                for (int x = 0; x < width; x++)
+                {
+                    row += clearImage[y, x].ToString();
+                }
+
+                row = row.Replace('1', 'O');
+                row = row.Replace('0', ' ');
+                Console.WriteLine(row);
+            }
+            //TODO - return it all as multiline string
+
+            return "WITNESS";
         }
     }
 }

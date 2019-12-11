@@ -25,7 +25,8 @@ namespace AdventOfCode
             TestRadiator,
             OrbitChecksum,
             TransferToSanta,
-            CheckCorruption
+            CheckCorruption,
+            ShowImage
         }
         
         //returns either command from a dictionary or "unknown" command
@@ -34,6 +35,7 @@ namespace AdventOfCode
 
         private static readonly IDictionary<string, CommandID> CommandsByName = new Dictionary<string, CommandID>
         {
+            ["show-image"] = CommandID.ShowImage,
             ["check-corruption"] = CommandID.CheckCorruption,
             ["transfer-to-santa"] = CommandID.TransferToSanta,
             ["calculate-fuel"] = CommandID.CalculateFuel,
@@ -74,7 +76,8 @@ namespace AdventOfCode
                 [CommandID.TestRadiator] = TestRadiator,
                 [CommandID.OrbitChecksum] = OrbitCheckSum,
                 [CommandID.TransferToSanta] = TransferToSanta,
-                [CommandID.CheckCorruption] = CheckCorruption
+                [CommandID.CheckCorruption] = CheckCorruption,
+                [CommandID.ShowImage] = ShowImage
             };
 
 
@@ -136,6 +139,9 @@ namespace AdventOfCode
 
         private static string CheckCorruption() =>
             SolvePuzzle(new SpaceImageValidator());
+
+        private static string ShowImage() =>
+            SolvePuzzle(new SpaceImageReader());
 
         private static string SolvePuzzle(IPuzzle puzzle)
         {

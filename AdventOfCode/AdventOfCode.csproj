@@ -59,9 +59,9 @@
     <Compile Include="Puzzles\Day6.cs" />
     <Compile Include="Puzzles\Day7.cs" />
     <Compile Include="Puzzles\Puzzle.cs" />
-    <Compile Include="Puzzles\SpaceImage.cs" />
     <Compile Include="Puzzles\SpaceImageValidator.cs" />
     <Compile Include="Rocket.cs" />
+    <Compile Include="SpaceImages\SpaceImage.cs" />
     <Compile Include="Wire.cs" />
   </ItemGroup>
   <ItemGroup>
