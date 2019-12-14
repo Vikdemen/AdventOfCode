@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Globalization;
 using AdventOfCode.SpaceImages;
 
 namespace AdventOfCode.Puzzles
@@ -24,20 +23,20 @@ namespace AdventOfCode.Puzzles
 
         public override string ResultText => $"Test finished. Number of 1 * 2 is {Result}";
 
-        protected int width = 25;
-        protected int height = 6;
-        protected SpaceImage image;
+        protected int Width = 25;
+        protected int Height = 6;
+        protected SpaceImage Image;
 
         public override void Solve()
         {
             string input = PuzzleInput[0];
-            image = new SpaceImage(width, height, input);
+            Image = new SpaceImage(Width, Height, input);
             Result = GetResult();
         }
 
-        public virtual int GetResult()
+        protected virtual int GetResult()
         {
-            var layer = image.GetLeastCorruptedLayer();
+            var layer = Image.GetLeastCorruptedLayer();
             return MultiplicationCount(layer);
         }
 
@@ -61,7 +60,7 @@ namespace AdventOfCode.Puzzles
     {
         public override string ResultText => ShowImage();
 
-        public override int GetResult()
+        protected override int GetResult()
         {
 
             //doesn't really matter
@@ -70,11 +69,11 @@ namespace AdventOfCode.Puzzles
 
         private string ShowImage()
         {
-            int[,] clearImage = image.ReadImage();
-            for (int y = 0; y < height; y++)
+            int[,] clearImage = Image.ReadImage();
+            for (int y = 0; y < Height; y++)
             {
                 string row = "";
-                for (int x = 0; x < width; x++)
+                for (int x = 0; x < Width; x++)
                 {
                     row += clearImage[y, x].ToString();
                 }

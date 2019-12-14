@@ -13,8 +13,8 @@ namespace AdventTest
         [TestCase(new int[] {1, 1, 1, 4, 99, 5, 6, 0, 99}, new int[] {30, 1, 1, 4, 2, 5, 6, 0, 99})]
         public void IntCodeTest(int[] input, int[] output)
         {
-            Computer computer = new Computer();
-            computer.Run(input);
+            Computer computer = new Computer(input);
+            computer.Run();
             var result = computer.MemoryRegister;
             CollectionAssert.AreEqual(output, result);
         }
@@ -32,10 +32,11 @@ namespace AdventTest
         [TestCase("3,12,6,12,15,1,13,14,13,4,13,99,-1,0,1,9", 88, 1)]
         [TestCase("3,3,1105,-1,9,1101,0,0,12,4,12,99,1", 0, 0)]
         [TestCase("3,3,1105,-1,9,1101,0,0,12,4,12,99,1", 88, 1)]
-        public void ParameterTest(string program, int input, int output)
+        public void ParameterTest(string instructions, int input, int output)
         {
-            Computer computer = new Computer();
-            computer.Run(program, input);
+            int[] program = InstructionParser.Parse(instructions);
+            var computer = new Computer(program);
+            computer.Run(input);
             int result = computer.Output;
             Assert.AreEqual(output, result);
         }
@@ -43,14 +44,15 @@ namespace AdventTest
         [TestCase(
             "3,21,1008,21,8,20,1005,20,22,107,8,21,20,1006,20,31,1106,0,36,98,0,0,1002,21,125,20,4,20,1105,1,46,104,999,1105,1,46,1101,1000,1,20,4,20,1105,1,46,98,99",
             8, 999, 1000, 1001)]
-        public void TrinaryCheck(string program, int comparison, int less, int equal, int greater)
+        public void TrinaryCheck(string instructions, int comparison, int less, int equal, int greater)
         {
-            Computer computer = new Computer();
-            computer.Run(program, comparison - 1);
+            int[] program = InstructionParser.Parse(instructions);
+            var computer = new Computer(program);
+            computer.Run(comparison - 1);
             int resultLess = computer.Output;
-            computer.Run(program, comparison);
+            computer.Run(comparison);
             int resultEqual = computer.Output;
-            computer.Run(program, comparison + 1);
+            computer.Run(comparison + 1);
             int resultGreater = computer.Output;
             Assert.AreEqual(less, resultLess);
             Assert.AreEqual(equal, resultEqual);

@@ -27,9 +27,14 @@ namespace AdventOfCode.IntCodes
         //Opcode 3 takes a single integer as input and saves it to the position given by its only parameter.
         private static void Op3(Memory memory, params int[] parameters)
         {
-            memory[parameters[0]] = memory.Input;
-            //that's why we must take pointers, not raw values, as input
-            memory.Pointer += 2;
+            if (memory.HasInput())
+            {
+                memory[parameters[0]] = memory.Input;
+                //that's why we must take pointers, not raw values, as input
+                memory.Pointer += 2;
+            }
+            else
+                memory.Pause();
         }
 
         //Opcode 4 outputs the value of its only parameter.
