@@ -1,6 +1,4 @@
 ﻿using System;
-using AdventOfCode.Passwords;
-using AdventOfCode.Puzzles;
 using static AdventOfCode.ConsoleCommands;
 
 namespace AdventOfCode
