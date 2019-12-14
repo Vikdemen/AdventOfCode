@@ -43,7 +43,9 @@
     <Compile Include="AdventSolver.cs" />
     <Compile Include="ConsoleCommands.cs" />
     <Compile Include="FileLoader.cs" />
+    <Compile Include="IntCodes\AmplifierChain.cs" />
     <Compile Include="IntCodes\Computer.cs" />
+    <Compile Include="IntCodes\InstructionParser.cs" />
     <Compile Include="IntCodes\IntCodeInstruction.cs" />
     <Compile Include="IntCodes\Memory.cs" />
     <Compile Include="IntCodes\OpCode.cs" />
@@ -51,13 +53,15 @@
     <Compile Include="OrbitMapper.cs" />
     <Compile Include="Passwords\PasswordValidator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Puzzles\AmplificationCircuit.cs" />
     <Compile Include="Puzzles\Day2.cs" />
     <Compile Include="Puzzles\Day1.cs" />
     <Compile Include="Puzzles\Day3.cs" />
     <Compile Include="Puzzles\Day4.cs" />
     <Compile Include="Puzzles\Day5.cs" />
     <Compile Include="Puzzles\Day6.cs" />
-    <Compile Include="Puzzles\Day7.cs" />
+    <Compile Include="Puzzles\FeedbackLoop.cs" />
+    <Compile Include="Puzzles\PhaseGenerator.cs" />
     <Compile Include="Puzzles\Puzzle.cs" />
     <Compile Include="Puzzles\SpaceImageValidator.cs" />
     <Compile Include="Rocket.cs" />
