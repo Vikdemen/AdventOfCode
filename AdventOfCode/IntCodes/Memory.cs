@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using System.Security.Authentication;
 
 namespace AdventOfCode.IntCodes
 {
@@ -14,15 +12,7 @@ namespace AdventOfCode.IntCodes
             set => MemoryRegister[index] = value;
         }
         
-        private int pointer;
-        public int Pointer
-        {
-            get => pointer;
-            set => pointer = Clamp(value);
-        }
-        
-        public bool Halted { get; private set; }
-        public bool Paused { get; private set; }
+        public bool Halted { get; private set; } = false;
 
         private readonly Queue<int> inputQueue = new Queue<int>();
         public int Input
@@ -31,15 +21,17 @@ namespace AdventOfCode.IntCodes
             set => inputQueue.Enqueue(value);
         }
         //important - each input value may be used only once
-        public bool HasInput()
-        {
-            return inputQueue.Any();
-        }
 
         public int Output { get; set; } = -1;
-        
+
+        private int pointer;
         public int RelativeBase { get; set; } = 0;
 
+        public int Pointer
+        {
+            get => pointer;
+            set => pointer = Clamp(value);
+        }
 
         public Memory(int[] instructions)
         {
@@ -48,32 +40,19 @@ namespace AdventOfCode.IntCodes
 
         public void Start()
         {
-            if (Paused)
-                Paused = false;
-            while (!Halted && !Paused)
+            while (!Halted)
             { 
                 var instruction = new IntCodeInstruction(this[Pointer]);
                 instruction.Execute(this, Pointer);
             }
         }
 
-        public void Resume()
-        {
-            Paused = false;
-            Start();
-        }
-
         public void Halt()
         {
             Halted = true;
         }
-
-        public void Pause()
-        {
-            Paused = true;
-        }
         
-        //stock clamp function is accessible only in .net core
+        //stock clamp function is accesible only in .net core
         private int Clamp(int value)
         {
             if (value < 0)

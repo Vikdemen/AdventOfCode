@@ -4,8 +4,7 @@ namespace AdventOfCode.IntCodes
 {
     public class OpCode
     {
-        private readonly OpCodeID CodeId;
-        //mostly for visualisation
+        public readonly OpCodeID CodeId;
         public readonly int NumberOfParameters;
         public readonly OpCodeAction Action;
              

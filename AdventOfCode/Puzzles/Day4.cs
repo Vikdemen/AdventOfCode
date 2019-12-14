@@ -20,7 +20,7 @@ namespace AdventOfCode.Puzzles
         
         protected override string InputFile => "day4.txt";
         public override string ResultText => $"{Result.ToString()} passwords are valid";
-        protected IPasswordValidator Validator { get; }
+        protected IPasswordValidator Validator { get; set; }
 
         public ValidPasswordCounter()
         {

@@ -8,7 +8,7 @@
         //What is the total number of direct and indirect orbits in your map data?
         protected override string InputFile => "day6.txt";
         public override string ResultText => $"There are {Result.ToString()} orbits total!";
-        protected OrbitMapper Mapper;
+        protected OrbitMapper mapper;
         
         public override void Solve()
         {
@@ -18,13 +18,13 @@
 
         public void PrepareMap()
         {
-            Mapper = new OrbitMapper();
-            Mapper.GenerateMap(PuzzleInput);
+            mapper = new OrbitMapper();
+            mapper.GenerateMap(PuzzleInput);
         }
 
         protected virtual void GetResult ()
         {
-            Result = Mapper.GetCheckSum();
+            Result = mapper.GetCheckSum();
         }
     }
     
@@ -38,7 +38,7 @@
 
         protected override void GetResult ()
         {
-            Result = Mapper.CountTransfers("YOU", "SAN");
+            Result = mapper.CountTransfers("YOU", "SAN");
             //Between the objects they are orbiting - not between YOU and SAN.)
             Result -= 2;
         }

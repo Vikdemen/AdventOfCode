@@ -9,24 +9,24 @@ namespace AdventOfCode.Puzzles
         //to the "1202 program alarm" state it had just before the last computer caught fire. To do this, before running
         //the program, replace position 1 with the value 12 and replace position 2 with the value 2. What value is left
         //at position 0 after the program halts?
-        
         protected override string InputFile => "day2.txt";
         public override string ResultText => $"Program finished, {Result.ToString()}" ;
+        protected Computer PuzzleComputer { get; set; }
+        protected string Commands { get; set; }
 
         public override void Solve()
         {
-            string instructions = PuzzleInput[0];
-            int[] program = InstructionParser.Parse(instructions);
-            program[1] = 1;
-            program[2] = 2;
-            Result = GetResult(program);
+            Commands = PuzzleInput[0];
+            PuzzleComputer = new Computer();
+            //TODO - add input-changing code
+            Result = RunComputer();
         }
 
-        protected virtual int GetResult(int[] program)
+        protected virtual int RunComputer()
         {
-            var memory = new Memory(program);
-            memory.Start();
-            return memory[0];
+            PuzzleComputer.Run(Commands);
+            int result = PuzzleComputer.MemoryRegister[0];
+            return result;
         }
     }
 
@@ -42,34 +42,9 @@ namespace AdventOfCode.Puzzles
         //input) - in other words, don't reuse memory from a previous attempt.
         //Find the input noun and verb that cause the program to produce the output 19690720. What is 100 * noun + verb?
         public override string ResultText => $"You need to input {Result.ToString()}" ;
-        private int Target { get; }
+        public int Target { get; set; } = 19690720;
 
-        public GravityAssist(int target = 19690720)
-        {
-            Target = target;
-        }
-
-        protected override int GetResult(int[] program) => 
-            FindNounVerb(program, Target);
-        
-        //iterates through combinations of instructions, looking for those which would output the target number,
-        //returning the first one as 4-digit number - a combination of 2d and 3rd positions in program
-        //returns -1 if no such combinations are found
-        private int FindNounVerb(int[] instructions, int target)
-        {
-            for (int noun = 0; noun < 100; noun++)
-            {
-                for (int verb = 0; verb < 100; verb++)
-                {
-                    instructions[1] = noun;
-                    instructions[2] = verb;
-                    var memory = new Memory(instructions);
-                    memory.Start();
-                    if (memory[0] == target) return noun * 100 + verb;
-                }
-            }
-            return -1;
-        }
+        protected override int RunComputer() => PuzzleComputer.FindNounVerb(Commands, Target);
     }
 
 }
