@@ -11,7 +11,7 @@ namespace AdventTest
         [TestCase(new int[] {2, 3, 0, 3, 99}, new int[] {2, 3, 0, 6, 99})]
         [TestCase(new int[] {2, 4, 4, 5, 99, 0}, new int[] {2, 4, 4, 5, 99, 9801})]
         [TestCase(new int[] {1, 1, 1, 4, 99, 5, 6, 0, 99}, new int[] {30, 1, 1, 4, 2, 5, 6, 0, 99})]
-        public void IntCodeTest(int[] input, int[] output)
+        public void IntCodeTest(long[] input, int[] output)
         {
             Computer computer = new Computer(input);
             computer.Run();
@@ -34,7 +34,7 @@ namespace AdventTest
         [TestCase("3,3,1105,-1,9,1101,0,0,12,4,12,99,1", 88, 1)]
         public void ParameterTest(string instructions, int input, int output)
         {
-            int[] program = InstructionParser.Parse(instructions);
+            long[] program = InstructionParser.Parse(instructions);
             var computer = new Computer(program);
             computer.Run(input);
             int result = computer.Output;
@@ -46,13 +46,15 @@ namespace AdventTest
             8, 999, 1000, 1001)]
         public void TrinaryCheck(string instructions, int comparison, int less, int equal, int greater)
         {
-            int[] program = InstructionParser.Parse(instructions);
+            long[] program = InstructionParser.Parse(instructions);
             var computer = new Computer(program);
-            computer.Run(comparison - 1);
+            computer.Run((comparison - 1));
             int resultLess = computer.Output;
+            computer = new Computer(program);
             computer.Run(comparison);
             int resultEqual = computer.Output;
-            computer.Run(comparison + 1);
+            computer = new Computer(program);
+            computer.Run((comparison + 1));
             int resultGreater = computer.Output;
             Assert.AreEqual(less, resultLess);
             Assert.AreEqual(equal, resultEqual);
@@ -63,7 +65,7 @@ namespace AdventTest
         public void PositionMode()
         {
             int testValue = 7;
-            var memory = new Memory(new [] {004, 2, testValue});
+            var memory = new Memory(new long[] {004, 2, testValue});
             var intCodeInstruction = new IntCodeInstruction(004);
             intCodeInstruction.Execute(memory, 0);
             long result = memory.Output;
@@ -74,7 +76,7 @@ namespace AdventTest
         public void ImmediateMode()
         {
             int testValue = 7;
-            var memory = new Memory(new [] {004, testValue});
+            var memory = new Memory(new long[] {004, testValue});
             var intCodeInstruction = new IntCodeInstruction(104);
             intCodeInstruction.Execute(memory, 0);
             long result = memory.Output;
@@ -85,7 +87,7 @@ namespace AdventTest
         public void RelativeMode()
         {
             int testValue = 7;
-            var memory = new Memory(new [] {004, 2, 0, testValue});
+            var memory = new Memory(new long[] {004, 2, 0, testValue});
             memory.RelativeBase = 1;
             var intCodeInstruction = new IntCodeInstruction(204);
             intCodeInstruction.Execute(memory, 0);
@@ -97,14 +99,21 @@ namespace AdventTest
         public void Op9()
         {
             int testValue = 77;
-            var memory = new Memory(new []{9, 2, testValue});
-            var instruction = new IntCodeInstruction(memory[0]);
+            var memory = new Memory(new long[]{9, 2, testValue});
+            var instruction = new IntCodeInstruction((int)memory[0]);
             instruction.Execute(memory,0);
             long result = memory.RelativeBase;
             Assert.AreEqual(testValue, result);
         }
-        
-        
 
+        [Test]
+        public void BigNumber()
+        {
+            long[] program = InstructionParser.Parse("104,1125899906842624,99");
+            var memory = new Memory(program);
+            memory.Start();
+            long result = memory.Output;
+            Assert.AreEqual(1125899906842624, result);
+        }
     }
 }

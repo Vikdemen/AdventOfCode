@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using AdventOfCode.SpaceImages;
 
 namespace AdventOfCode.Puzzles
@@ -62,7 +63,6 @@ namespace AdventOfCode.Puzzles
 
         protected override int GetResult()
         {
-
             //doesn't really matter
             return 0;
         }
@@ -70,6 +70,7 @@ namespace AdventOfCode.Puzzles
         private string ShowImage()
         {
             int[,] clearImage = Image.ReadImage();
+            var ascii = new StringBuilder();
             for (int y = 0; y < Height; y++)
             {
                 string row = "";
@@ -78,13 +79,13 @@ namespace AdventOfCode.Puzzles
                     row += clearImage[y, x].ToString();
                 }
 
+                //primitive graphics
                 row = row.Replace('1', 'O');
                 row = row.Replace('0', ' ');
-                Console.WriteLine(row);
+                ascii.AppendLine(row);
             }
-            //TODO - return it all as multiline string
 
-            return "WITNESS";
+            return ascii.ToString();
         }
     }
 }

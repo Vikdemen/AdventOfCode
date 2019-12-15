@@ -44,18 +44,18 @@ namespace AdventOfCode.IntCodes
 
         public void Execute(Memory memory, int pointer)
         {
-            int[] parameters = FindParameters(memory, pointer);
+            long[] parameters = FindParameters(memory, pointer);
             opCode.Action(memory, parameters);
         }
 
-        private int[] FindParameters(Memory memory, int instructionIndex)
+        private long[] FindParameters(Memory memory, int instructionIndex)
         {
-            int[] parameters = parameterModes.Select(ValueByMode).ToArray();
+            long[] parameters = parameterModes.Select(ValueByMode).ToArray();
             
-            int ValueByMode(ParameterMode mode, int index)
+            long ValueByMode(ParameterMode mode, int index)
             {
                 int number = index + 1;
-                int value = mode switch
+                long value = mode switch
                 {
                     ParameterMode.Immediate => instructionIndex + number,
                     ParameterMode.Position => memory[instructionIndex + number],

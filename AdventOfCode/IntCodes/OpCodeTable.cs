@@ -4,32 +4,32 @@ namespace AdventOfCode.IntCodes
 {
     public static class OpCodeTable
     {
-        public delegate void OpCodeAction(Memory memory, params int[] parameters);
+        public delegate void OpCodeAction(Memory memory, params long[] parameters);
 
         //Opcode 1 adds together numbers read from two positions and stores the result in a third position.
         //The three integers immediately after the opcode tell you these three positions - the first two indicate
         //the positions from which you should read the input values, and the third indicates the position at which
         //the output should be stored.
-        private static void Op1(Memory memory, params int[] parameters)
+        private static void Op1(Memory memory, params long[] parameters)
         {
-            memory[parameters[2]] = memory[parameters[0]] + memory[parameters[1]];
+            memory[(int)parameters[2]] = memory[(int) parameters[0]] + memory[(int) parameters[1]];
             memory.Pointer += 4;
         }
 
         //Opcode 2 works exactly like opcode 1, except it multiplies the two inputs instead of adding them.
         //Again, the three integers after the opcode indicate where the inputs and outputs are, not their values.
-        private static void Op2(Memory memory, params int[] parameters)
+        private static void Op2(Memory memory, params long[] parameters)
         {
-            memory[parameters[2]] = memory[parameters[0]] * memory[parameters[1]];
+            memory[(int) parameters[2]] = memory[(int) parameters[0]] * memory[(int) parameters[1]];
             memory.Pointer += 4;
         }
 
         //Opcode 3 takes a single integer as input and saves it to the position given by its only parameter.
-        private static void Op3(Memory memory, params int[] parameters)
+        private static void Op3(Memory memory, params long[] parameters)
         {
             if (memory.HasInput())
             {
-                memory[parameters[0]] = memory.Input;
+                memory[(int) parameters[0]] = memory.Input;
                 //that's why we must take pointers, not raw values, as input
                 memory.Pointer += 2;
             }
@@ -38,59 +38,59 @@ namespace AdventOfCode.IntCodes
         }
 
         //Opcode 4 outputs the value of its only parameter.
-        private static void Op4(Memory memory, params int[] parameters)
+        private static void Op4(Memory memory, params long[] parameters)
         {
-            memory.Output = memory[parameters[0]];
+            memory.Output = memory[(int) parameters[0]];
             memory.Pointer += 2;
         }
 
         //Opcode 5 is jump-if-true: if the first parameter is non-zero, it sets the instruction pointer to the value
         //from the second parameter. Otherwise, it does nothing.
-        private static void Op5(Memory memory, params int[] parameters)
+        private static void Op5(Memory memory, params long[] parameters)
         {
-            if (memory[parameters[0]] != 0)
-                memory.Pointer = memory[parameters[1]];
+            if (memory[(int) parameters[0]] != 0)
+                memory.Pointer = (int)memory[(int) parameters[1]];
             else
                 memory.Pointer += 3;
         }
 
         //Opcode 6 is jump-if-false: if the first parameter is zero, it sets the instruction pointer to the value from
         //the second parameter. Otherwise, it does nothing.
-        private static void Op6(Memory memory, params int[] parameters)
+        private static void Op6(Memory memory, params long[] parameters)
         {
-            if (memory[parameters[0]] == 0)
-                memory.Pointer = memory[parameters[1]];
+            if (memory[(int) parameters[0]] == 0)
+                memory.Pointer = (int)memory[(int) parameters[1]];
             else
                 memory.Pointer += 3;
         }
 
         //Opcode 7 is less than: if the first parameter is less than the second parameter,
         //it stores 1 in the position given by the third parameter. Otherwise, it stores 0.
-        private static void Op7(Memory memory, params int[] parameters)
+        private static void Op7(Memory memory, params long[] parameters)
         {
-            memory[parameters[2]] = memory[parameters[0]] < memory[parameters[1]] ? 1 : 0;
+            memory[(int) parameters[2]] = memory[(int) parameters[0]] < memory[(int) parameters[1]] ? 1 : 0;
             memory.Pointer += 4;
         }
 
         //Opcode 8 is equals: if the first parameter is equal to the second parameter,
         //it stores 1 in the position given by the third parameter. Otherwise, it stores 0.
-        private static void Op8(Memory memory, params int[] parameters)
+        private static void Op8(Memory memory, params long[] parameters)
         {
-            memory[parameters[2]] = memory[parameters[0]] == memory[parameters[1]] ? 1 : 0;
+            memory[(int) parameters[2]] = memory[(int) parameters[0]] == memory[(int) parameters[1]] ? 1 : 0;
             memory.Pointer += 4;
         }
         
         //Opcode 9 adjusts the relative base by the value of its only parameter. The relative base increases (or
         //decreases, if the value is negative) by the value of the parameter.
-        private static void Op9 (Memory memory, params int[] parameters)
+        private static void Op9 (Memory memory, params long[] parameters)
         {
-            memory.RelativeBase = memory[parameters[0]];
+            memory.RelativeBase = (int)memory[(int) parameters[0]];
             memory.Pointer += 2;
         }
         
         
 
-        private static void Op99(Memory memory, params int[] parameters)
+        private static void Op99(Memory memory, params long[] parameters)
         {
             memory.Halt();
         }

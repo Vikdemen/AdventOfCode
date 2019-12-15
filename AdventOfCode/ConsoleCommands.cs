@@ -26,7 +26,10 @@ namespace AdventOfCode
             OrbitChecksum,
             TransferToSanta,
             CheckCorruption,
-            ShowImage
+            ShowImage,
+            FeedbackLoop,
+            AmplificationCircuit,
+            SensorBoost
         }
         
         //returns either command from a dictionary or "unknown" command
@@ -35,6 +38,9 @@ namespace AdventOfCode
 
         private static readonly IDictionary<string, CommandID> CommandsByName = new Dictionary<string, CommandID>
         {
+            ["sensor-boost"] = CommandID.SensorBoost,
+            ["feedback-loop"] = CommandID.FeedbackLoop,
+            ["amplification-circuit"] = CommandID.AmplificationCircuit,
             ["show-image"] = CommandID.ShowImage,
             ["check-corruption"] = CommandID.CheckCorruption,
             ["transfer-to-santa"] = CommandID.TransferToSanta,
@@ -77,22 +83,25 @@ namespace AdventOfCode
                 [CommandID.OrbitChecksum] = OrbitCheckSum,
                 [CommandID.TransferToSanta] = TransferToSanta,
                 [CommandID.CheckCorruption] = CheckCorruption,
-                [CommandID.ShowImage] = ShowImage
+                [CommandID.ShowImage] = ShowImage,
+                [CommandID.FeedbackLoop] = FeedbackLoop,
+                [CommandID.AmplificationCircuit] = AmplificationCircuit,
+                [CommandID.SensorBoost] = SensorBoost
             };
 
 
         private static string ListCommands()
         {
             List<string> commandNames = new List<string>(CommandsByName.Keys);
+            string commandList = "";
             foreach (string commandName in commandNames)
             {
-                Console.WriteLine(commandName);
+                commandList += commandName + "\r\n";
             }
-            return "...";
-            //TODO - rewrite it so it returns a single string with line breaks
+            return commandList;
         }
 
-        public static string Exit()
+        private static string Exit()
         {
             AdventSolver.ContinueInput = false;
             return "Program finished, exiting";
@@ -142,6 +151,15 @@ namespace AdventOfCode
 
         private static string ShowImage() =>
             SolvePuzzle(new SpaceImageReader());
+
+        private static string AmplificationCircuit() =>
+            SolvePuzzle(new AmplificationCircuit());
+
+        private static string FeedbackLoop() =>
+            SolvePuzzle(new FeedbackLoop());
+
+        private static string SensorBoost() =>
+            SolvePuzzle(new SensorBoost());
 
         private static string SolvePuzzle(IPuzzle puzzle)
         {

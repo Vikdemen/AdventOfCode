@@ -8,12 +8,12 @@ namespace AdventOfCode.IntCodes
         //at the first integer (called position 0). Here, you will find an opcode - either 1, 2, or 99. The opcode
         //indicates what to do; for example, 99 means that the program is finished and should immediately halt.
         //Encountering an unknown opcode means something went wrong.
-        private Memory memoryBlock;
-        public int[] MemoryRegister => memoryBlock.MemoryRegister.ToArray();
+        private readonly Memory memoryBlock;
+        public long[] MemoryRegister => memoryBlock.MemoryRegister.ToArray();
         //provides a copy, so you can't manipulate memory directly
-        public int Output => memoryBlock.Output;
+        public int Output => (int)memoryBlock.Output;
 
-        public Computer(int[] instructions)
+        public Computer(long[] instructions)
         {
             memoryBlock = new Memory(instructions);
         }

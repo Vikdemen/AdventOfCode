@@ -8,7 +8,7 @@
         public string[] PuzzleInput { get; set; }
         
         public abstract string ResultText { get; }
-        public int Result { get; protected set; }
+        public long Result { get; protected set; }
 
         public void LoadData()
         {
@@ -25,7 +25,7 @@
     public interface IPuzzle
     {
         string ResultText { get; }
-        int Result { get; }
+        long Result { get; }
         void LoadData();
         void Solve();
     }

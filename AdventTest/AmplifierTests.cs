@@ -15,7 +15,7 @@ namespace AdventTest
         [TestCase("3,15,3,16,1002,16,10,16,1,16,15,15,4,15,99,0,0", new[]{4,3,2,1,0}, 43210)]
         public void CheckMaxSignal(string instructions, int[] sequence, int signal)
         {
-            int[] program = InstructionParser.Parse(instructions);
+            long[] program = InstructionParser.Parse(instructions);
             var amplifier = new AmplifierChain(program, 5);
             int result = amplifier.Run(sequence);
             Assert.AreEqual(signal, result);
@@ -27,7 +27,7 @@ namespace AdventTest
             Puzzle puzzle = new AmplificationCircuit();
             puzzle.PuzzleInput = data;
             puzzle.Solve();
-            int result = puzzle.Result;
+            int result = (int)puzzle.Result;
             Assert.AreEqual(signal, result);
         }
 
@@ -38,7 +38,7 @@ namespace AdventTest
             new[] {9,7,8,5,6}, 18216)]
         public void FeedbackMode(string instructions, int[] sequence, int signal)
         {
-            int[] program = InstructionParser.Parse(instructions);
+            long[] program = InstructionParser.Parse(instructions);
             var amplifier = new FeedbackChain(program, 5);
             int result = amplifier.Run(sequence);
             Assert.AreEqual(signal, result);

@@ -11,11 +11,11 @@ namespace AdventOfCode.IntCodes
     {
         protected readonly Memory[] Amplifiers;
         protected readonly int NumberOfAmplifiers;
-        protected readonly int[] Program;
+        protected readonly long[] Program;
         protected const int InitialSignal = 0;
 
         //creates a list of N memory blocks with same instructions
-        public AmplifierChain(int[] instructions, int numberOfAmplifiers)
+        public AmplifierChain(long[] instructions, int numberOfAmplifiers)
         {
             NumberOfAmplifiers = numberOfAmplifiers;
             Program = instructions;
@@ -38,7 +38,7 @@ namespace AdventOfCode.IntCodes
         {
             amplifier.Input = input;
             amplifier.Start();
-            return amplifier.Output;
+            return (int)amplifier.Output;
         }
     }
     
@@ -46,7 +46,7 @@ namespace AdventOfCode.IntCodes
 
     public class FeedbackChain : AmplifierChain
     {
-        public FeedbackChain(int[] instructions, int numberOfAmplifiers) 
+        public FeedbackChain(long[] instructions, int numberOfAmplifiers) 
             : base(instructions, numberOfAmplifiers)
         {
         }

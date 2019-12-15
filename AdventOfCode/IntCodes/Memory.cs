@@ -6,14 +6,34 @@ namespace AdventOfCode.IntCodes
 {
     public class Memory
     {
-        public List<int> MemoryRegister { get; }
+        public List<long> MemoryRegister { get; }
 
-        public int this[int index]
+        public long this[int index]
         {
-            get => MemoryRegister[index];
-            set => MemoryRegister[index] = value;
+            get
+            {
+                CheckIndex(index);
+                return MemoryRegister[index];
+            }
+            set
+            {
+                CheckIndex(index);
+                MemoryRegister[index] = value;
+            }
         }
-        
+
+        //memory should be infinite
+        private void CheckIndex(int index)
+        {
+            if (index >= MemoryRegister.Count)
+            {
+                int extraLength = index - MemoryRegister.Count + 1;
+                MemoryRegister.AddRange(new long[extraLength]);
+            }
+        }
+
+        //ugly hack, rewrite later
+
         private int pointer;
         public int Pointer
         {
@@ -36,14 +56,14 @@ namespace AdventOfCode.IntCodes
             return inputQueue.Any();
         }
 
-        public int Output { get; set; } = -1;
+        public long Output { get; set; } = -1;
         
         public int RelativeBase { get; set; } = 0;
 
 
-        public Memory(int[] instructions)
+        public Memory(long[] instructions)
         {
-            MemoryRegister = new List<int>(instructions);
+            MemoryRegister = new List<long>(instructions);
         }
 
         public void Start()
@@ -52,15 +72,9 @@ namespace AdventOfCode.IntCodes
                 Paused = false;
             while (!Halted && !Paused)
             { 
-                var instruction = new IntCodeInstruction(this[Pointer]);
+                var instruction = new IntCodeInstruction((int)this[Pointer]);
                 instruction.Execute(this, Pointer);
             }
-        }
-
-        public void Resume()
-        {
-            Paused = false;
-            Start();
         }
 
         public void Halt()

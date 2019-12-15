@@ -63,6 +63,7 @@
     <Compile Include="Puzzles\FeedbackLoop.cs" />
     <Compile Include="Puzzles\PhaseGenerator.cs" />
     <Compile Include="Puzzles\Puzzle.cs" />
+    <Compile Include="Puzzles\SensorBoost.cs" />
     <Compile Include="Puzzles\SpaceImageValidator.cs" />
     <Compile Include="Rocket.cs" />
     <Compile Include="SpaceImages\SpaceImage.cs" />
@@ -91,6 +92,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="AdventData\day8.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AdventData\day9.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

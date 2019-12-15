@@ -28,7 +28,7 @@ namespace AdventOfCode.Puzzles
 
         public override void Solve()
         {
-            int[] program = InstructionParser.Parse(PuzzleInput[0]);
+            long[] program = InstructionParser.Parse(PuzzleInput[0]);
             
             List<int[]> phaseSettingsVariants = PhaseGenerator.GeneratePhaseSettings(FeedbackMode);
             
@@ -39,7 +39,7 @@ namespace AdventOfCode.Puzzles
             Result = largestSignal;
         }
 
-        protected virtual ICircuit CreateAmplifier(int[] program)
+        protected virtual ICircuit CreateAmplifier(long[] program)
         {
             return new AmplifierChain(program, NumberOfAmplifiers);
         }

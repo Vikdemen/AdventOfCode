@@ -16,17 +16,17 @@ namespace AdventOfCode.Puzzles
         public override void Solve()
         {
             string instructions = PuzzleInput[0];
-            int[] program = InstructionParser.Parse(instructions);
+            long[] program = InstructionParser.Parse(instructions);
             program[1] = 1;
             program[2] = 2;
             Result = GetResult(program);
         }
 
-        protected virtual int GetResult(int[] program)
+        protected virtual int GetResult(long[] program)
         {
             var memory = new Memory(program);
             memory.Start();
-            return memory[0];
+            return (int)memory[0];
         }
     }
 
@@ -49,13 +49,13 @@ namespace AdventOfCode.Puzzles
             Target = target;
         }
 
-        protected override int GetResult(int[] program) => 
+        protected override int GetResult(long[] program) => 
             FindNounVerb(program, Target);
         
         //iterates through combinations of instructions, looking for those which would output the target number,
         //returning the first one as 4-digit number - a combination of 2d and 3rd positions in program
         //returns -1 if no such combinations are found
-        private int FindNounVerb(int[] instructions, int target)
+        private int FindNounVerb(long[] instructions, int target)
         {
             for (int noun = 0; noun < 100; noun++)
             {

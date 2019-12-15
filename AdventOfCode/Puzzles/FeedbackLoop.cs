@@ -25,7 +25,7 @@ namespace AdventOfCode.Puzzles
         {
             FeedbackMode = true;
         }
-        protected override ICircuit CreateAmplifier(int[] program)
+        protected override ICircuit CreateAmplifier(long[] program)
         {
             return new FeedbackChain(program, NumberOfAmplifiers);
         }
