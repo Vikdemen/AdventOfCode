@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdventSolver.cs" />
+    <Compile Include="Asteroids\AsteroidMap.cs" />
     <Compile Include="ConsoleCommands.cs" />
     <Compile Include="FileLoader.cs" />
     <Compile Include="IntCodes\AmplifierChain.cs" />
@@ -61,6 +62,7 @@
     <Compile Include="Puzzles\Day5.cs" />
     <Compile Include="Puzzles\Day6.cs" />
     <Compile Include="Puzzles\FeedbackLoop.cs" />
+    <Compile Include="Puzzles\MonitoringStation.cs" />
     <Compile Include="Puzzles\PhaseGenerator.cs" />
     <Compile Include="Puzzles\Puzzle.cs" />
     <Compile Include="Puzzles\SensorBoost.cs" />
