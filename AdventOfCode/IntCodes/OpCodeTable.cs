@@ -12,7 +12,7 @@ namespace AdventOfCode.IntCodes
         //the output should be stored.
         private static void Op1(Memory memory, params long[] parameters)
         {
-            memory[(int)parameters[2]] = memory[(int) parameters[0]] + memory[(int) parameters[1]];
+            memory[parameters[2]] = memory[parameters[0]] + memory[parameters[1]];
             memory.Pointer += 4;
         }
 
@@ -20,7 +20,7 @@ namespace AdventOfCode.IntCodes
         //Again, the three integers after the opcode indicate where the inputs and outputs are, not their values.
         private static void Op2(Memory memory, params long[] parameters)
         {
-            memory[(int) parameters[2]] = memory[(int) parameters[0]] * memory[(int) parameters[1]];
+            memory[parameters[2]] = memory[parameters[0]] * memory[parameters[1]];
             memory.Pointer += 4;
         }
 
@@ -29,7 +29,7 @@ namespace AdventOfCode.IntCodes
         {
             if (memory.HasInput())
             {
-                memory[(int) parameters[0]] = memory.Input;
+                memory[parameters[0]] = memory.Input;
                 //that's why we must take pointers, not raw values, as input
                 memory.Pointer += 2;
             }
@@ -40,7 +40,7 @@ namespace AdventOfCode.IntCodes
         //Opcode 4 outputs the value of its only parameter.
         private static void Op4(Memory memory, params long[] parameters)
         {
-            memory.Output = memory[(int) parameters[0]];
+            memory.Output = memory[parameters[0]];
             memory.Pointer += 2;
         }
 
@@ -48,8 +48,8 @@ namespace AdventOfCode.IntCodes
         //from the second parameter. Otherwise, it does nothing.
         private static void Op5(Memory memory, params long[] parameters)
         {
-            if (memory[(int) parameters[0]] != 0)
-                memory.Pointer = (int)memory[(int) parameters[1]];
+            if (memory[ parameters[0]] != 0)
+                memory.Pointer = memory[parameters[1]];
             else
                 memory.Pointer += 3;
         }
@@ -58,8 +58,8 @@ namespace AdventOfCode.IntCodes
         //the second parameter. Otherwise, it does nothing.
         private static void Op6(Memory memory, params long[] parameters)
         {
-            if (memory[(int) parameters[0]] == 0)
-                memory.Pointer = (int)memory[(int) parameters[1]];
+            if (memory[parameters[0]] == 0)
+                memory.Pointer = memory[parameters[1]];
             else
                 memory.Pointer += 3;
         }
@@ -68,7 +68,7 @@ namespace AdventOfCode.IntCodes
         //it stores 1 in the position given by the third parameter. Otherwise, it stores 0.
         private static void Op7(Memory memory, params long[] parameters)
         {
-            memory[(int) parameters[2]] = memory[(int) parameters[0]] < memory[(int) parameters[1]] ? 1 : 0;
+            memory[parameters[2]] = memory[parameters[0]] < memory[parameters[1]] ? 1 : 0;
             memory.Pointer += 4;
         }
 
@@ -76,7 +76,7 @@ namespace AdventOfCode.IntCodes
         //it stores 1 in the position given by the third parameter. Otherwise, it stores 0.
         private static void Op8(Memory memory, params long[] parameters)
         {
-            memory[(int) parameters[2]] = memory[(int) parameters[0]] == memory[(int) parameters[1]] ? 1 : 0;
+            memory[parameters[2]] = memory[parameters[0]] == memory[parameters[1]] ? 1 : 0;
             memory.Pointer += 4;
         }
         
@@ -84,7 +84,7 @@ namespace AdventOfCode.IntCodes
         //decreases, if the value is negative) by the value of the parameter.
         private static void Op9 (Memory memory, params long[] parameters)
         {
-            memory.RelativeBase = (int)memory[(int) parameters[0]];
+            memory.RelativeBase = memory[parameters[0]];
             memory.Pointer += 2;
         }
         

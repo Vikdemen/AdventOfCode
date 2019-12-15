@@ -1,4 +1,5 @@
-﻿using AdventOfCode.IntCodes;
+﻿using System;
+using AdventOfCode.IntCodes;
 
 namespace AdventOfCode.Puzzles
 {
@@ -10,8 +11,14 @@ namespace AdventOfCode.Puzzles
         {
             long[] program = InstructionParser.Parse(PuzzleInput[0]);
             var memory = new Memory(program);
+            memory.Input = 1;
             memory.Start();
-            Result = memory.Output;
+            long[] outputs = memory.OutputQueue.ToArray();
+            foreach (var item in outputs)
+            {
+                Console.WriteLine(item.ToString());
+            }
+            Result = outputs[0];
         }
     }
 }

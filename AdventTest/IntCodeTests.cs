@@ -7,15 +7,16 @@ namespace AdventTest
     [TestFixture]
     public class IntCodeTests
     {
-        [TestCase(new int[] {1, 0, 0, 0, 99}, new int[] {2, 0, 0, 0, 99})]
-        [TestCase(new int[] {2, 3, 0, 3, 99}, new int[] {2, 3, 0, 6, 99})]
-        [TestCase(new int[] {2, 4, 4, 5, 99, 0}, new int[] {2, 4, 4, 5, 99, 9801})]
-        [TestCase(new int[] {1, 1, 1, 4, 99, 5, 6, 0, 99}, new int[] {30, 1, 1, 4, 2, 5, 6, 0, 99})]
-        public void IntCodeTest(long[] input, int[] output)
+        [TestCase("1,0,0,0,99", new long[] {2, 0, 0, 0, 99})]
+        [TestCase("2,3,0,3,99", new long[] {2, 3, 0, 6, 99})]
+        [TestCase("2,4,4,5,99,0", new long[] {2, 4, 4, 5, 99, 9801})]
+        [TestCase("1,1,1,4,99,5,6,0,99", new long[] {30, 1, 1, 4, 2, 5, 6, 0, 99})]
+        public void IntCodeTest(string instructions, long[] output)
         {
-            Computer computer = new Computer(input);
-            computer.Run();
-            var result = computer.MemoryRegister;
+            long[] program = InstructionParser.Parse(instructions);
+            var memory = new Memory(program);
+            memory.Start();
+            var result = memory.MemoryRegister.ToArray();
             CollectionAssert.AreEqual(output, result);
         }
 
@@ -35,9 +36,10 @@ namespace AdventTest
         public void ParameterTest(string instructions, int input, int output)
         {
             long[] program = InstructionParser.Parse(instructions);
-            var computer = new Computer(program);
-            computer.Run(input);
-            int result = computer.Output;
+            var memory = new Memory(program);
+            memory.Input = input;
+            memory.Start();
+            long result = memory.Output;
             Assert.AreEqual(output, result);
         }
 
@@ -47,15 +49,18 @@ namespace AdventTest
         public void TrinaryCheck(string instructions, int comparison, int less, int equal, int greater)
         {
             long[] program = InstructionParser.Parse(instructions);
-            var computer = new Computer(program);
-            computer.Run((comparison - 1));
-            int resultLess = computer.Output;
-            computer = new Computer(program);
-            computer.Run(comparison);
-            int resultEqual = computer.Output;
-            computer = new Computer(program);
-            computer.Run((comparison + 1));
-            int resultGreater = computer.Output;
+            var memory = new Memory(program);
+            memory.Input = comparison - 1;
+            memory.Start();
+            long resultLess = memory.Output;
+            memory = new Memory(program);
+            memory.Input = comparison;
+            memory.Start();
+            long resultEqual = memory.Output;
+            memory = new Memory(program);
+            memory.Input = comparison + 1;
+            memory.Start();
+            long resultGreater = memory.Output;
             Assert.AreEqual(less, resultLess);
             Assert.AreEqual(equal, resultEqual);
             Assert.AreEqual(greater, resultGreater);
@@ -106,14 +111,39 @@ namespace AdventTest
             Assert.AreEqual(testValue, result);
         }
 
-        [Test]
-        public void BigNumber()
+        [TestCase("203,0,99,5,0", 77)]
+        [TestCase("003,4,99,5,0", 77)]
+        public void Op3(string instuctions, int testValue)
         {
-            long[] program = InstructionParser.Parse("104,1125899906842624,99");
+            long[] program = InstructionParser.Parse(instuctions);
+            var memory = new Memory(program);
+            memory.Input = testValue;
+            memory.RelativeBase = 4;
+            memory.Start();
+            Assert.AreEqual(testValue, memory.MemoryRegister[4]);
+        }
+
+        [TestCase("1102,34915192,34915192,7,4,7,99,0", 1219070632396864)]
+        [TestCase("104,1125899906842624,99", 1125899906842624)]
+        public void BigNumber(string instructions, long expected)
+        {
+            long[] program = InstructionParser.Parse(instructions);
             var memory = new Memory(program);
             memory.Start();
             long result = memory.Output;
-            Assert.AreEqual(1125899906842624, result);
+            Assert.AreEqual(expected, result);
+        }
+
+        [Test]
+        public void OutputCopy()
+        {
+            string instructions = "109,1,204,-1,1001,100,1,100,1008,100,16,101,1006,101,0,99";
+            long[] program = InstructionParser.Parse(instructions);
+            var memory = new Memory(program);
+
+            memory.Start();
+            long result = memory.Output;
+            Assert.AreEqual(109, result);
         }
     }
 }

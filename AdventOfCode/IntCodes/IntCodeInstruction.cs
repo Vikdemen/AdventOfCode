@@ -42,13 +42,13 @@ namespace AdventOfCode.IntCodes
             parameterModes = modes;
         }
 
-        public void Execute(Memory memory, int pointer)
+        public void Execute(Memory memory, long pointer)
         {
             long[] parameters = FindParameters(memory, pointer);
             opCode.Action(memory, parameters);
         }
 
-        private long[] FindParameters(Memory memory, int instructionIndex)
+        private long[] FindParameters(Memory memory, long instructionIndex)
         {
             long[] parameters = parameterModes.Select(ValueByMode).ToArray();
             
@@ -57,13 +57,17 @@ namespace AdventOfCode.IntCodes
                 int number = index + 1;
                 long value = mode switch
                 {
+                    //immediate mode. In immediate mode, a parameter is interpreted as a value - if the parameter is 50,
+                    //its value is simply 50.
                     ParameterMode.Immediate => instructionIndex + number,
+                    //Position mode, causes the parameter to be interpreted as a position - if the parameter is
+                    //50, its value is the value stored at address 50 in memory.
                     ParameterMode.Position => memory[instructionIndex + number],
                     //Parameters in mode 2, relative mode, behave very similarly to parameters in position mode: the
                     //parameter is interpreted as a position.
                     //The address a relative mode parameter refers to is itself plus the current relative base.
                     ParameterMode.Relative => memory[instructionIndex + number] + memory.RelativeBase,
-                    _ => 0
+                    _ => throw new System.ArgumentException("Invalid parameter mode", nameof(mode))
                 };
                 return value;
             }
@@ -73,10 +77,10 @@ namespace AdventOfCode.IntCodes
         
         private enum ParameterMode
         {
-            Invalid,
-            Position,
-            Immediate,
-            Relative
+            Invalid = -1,
+            Position = 0,
+            Immediate = 1,
+            Relative = 2
         };
     }
 }

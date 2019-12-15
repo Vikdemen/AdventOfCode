@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Security.Authentication;
 
 namespace AdventOfCode.IntCodes
 {
@@ -8,57 +7,62 @@ namespace AdventOfCode.IntCodes
     {
         public List<long> MemoryRegister { get; }
 
-        public long this[int index]
+        public long this[long index]
         {
             get
             {
                 CheckIndex(index);
-                return MemoryRegister[index];
+                return MemoryRegister[(int)index];
             }
             set
             {
                 CheckIndex(index);
-                MemoryRegister[index] = value;
+                MemoryRegister[(int)index] = value;
             }
         }
 
         //memory should be infinite
-        private void CheckIndex(int index)
+        //adds extra space when needed
+        private void CheckIndex(long index)
         {
             if (index >= MemoryRegister.Count)
             {
-                int extraLength = index - MemoryRegister.Count + 1;
+                long extraLength = index - MemoryRegister.Count + 1;
                 MemoryRegister.AddRange(new long[extraLength]);
             }
         }
 
-        //ugly hack, rewrite later
+        public long Pointer { get; set; }
 
-        private int pointer;
-        public int Pointer
-        {
-            get => pointer;
-            set => pointer = Clamp(value);
-        }
-        
         public bool Halted { get; private set; }
         public bool Paused { get; private set; }
 
-        private readonly Queue<int> inputQueue = new Queue<int>();
+        private readonly Queue<long> inputQueue = new Queue<long>();
         public int Input
         {
-            get => inputQueue.Dequeue();
+            get => (int)inputQueue.Dequeue();
             set => inputQueue.Enqueue(value);
         }
         //important - each input value may be used only once
         public bool HasInput()
         {
-            return inputQueue.Any();
+            return inputQueue.Count != 0;
         }
 
-        public long Output { get; set; } = -1;
-        
-        public int RelativeBase { get; set; } = 0;
+        public long Output
+        {
+            get
+            {
+                if (OutputQueue.Any())
+                    return OutputQueue.Dequeue();
+                return -1;
+            }
+            set => OutputQueue.Enqueue(value);
+        }
+
+        public Queue<long> OutputQueue { get; } = new Queue<long>();
+
+        public long RelativeBase { get; set; }
 
 
         public Memory(long[] instructions)
@@ -85,16 +89,6 @@ namespace AdventOfCode.IntCodes
         public void Pause()
         {
             Paused = true;
-        }
-        
-        //stock clamp function is accessible only in .net core
-        private int Clamp(int value)
-        {
-            if (value < 0)
-                return 0;
-            if (value > MemoryRegister.Count)
-                return MemoryRegister.Count;
-            return value;
         }
     }
 }
