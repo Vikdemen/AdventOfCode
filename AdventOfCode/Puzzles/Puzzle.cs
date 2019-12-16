@@ -1,4 +1,7 @@
-﻿namespace AdventOfCode.Puzzles
+﻿using System;
+using AdventOfCode.DataLoading;
+
+namespace AdventOfCode.Puzzles
 {
     public abstract class Puzzle
     {
@@ -10,9 +13,12 @@
         public abstract string ResultText { get; }
         public long Result { get; protected set; }
 
+        public IDataLoader DataLoader { get; set; }
+        
+        //if no data loader defined, returns empty array
         public void LoadData()
         {
-            PuzzleInput = FileLoader.GetData(InputFile);
+            PuzzleInput = DataLoader?.GetData(InputFile) ?? Array.Empty<string>();
         }
 
         public void Process(string[] puzzleInput)
@@ -26,6 +32,7 @@
     {
         string ResultText { get; }
         long Result { get; }
+        IDataLoader DataLoader { get; set; }
         void LoadData();
         void Solve();
     }

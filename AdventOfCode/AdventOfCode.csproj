@@ -43,7 +43,8 @@
     <Compile Include="AdventSolver.cs" />
     <Compile Include="Asteroids\AsteroidMap.cs" />
     <Compile Include="ConsoleCommands.cs" />
-    <Compile Include="FileLoader.cs" />
+    <Compile Include="DataLoading\FileLoader.cs" />
+    <Compile Include="DataLoading\IDataLoader.cs" />
     <Compile Include="IntCodes\AmplifierChain.cs" />
     <Compile Include="IntCodes\Computer.cs" />
     <Compile Include="IntCodes\InstructionParser.cs" />

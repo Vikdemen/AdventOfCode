@@ -1,4 +1,5 @@
 ﻿using System;
+using AdventOfCode.DataLoading;
 using static AdventOfCode.ConsoleCommands;
 
 namespace AdventOfCode
@@ -7,8 +8,11 @@ namespace AdventOfCode
     {
         public static bool ContinueInput { get; set; } = true;
 
+        public static IDataLoader DataLoader { get; private set; }
+
         public static void Main()
         {
+            DataLoader = new FileLoader();
             while (ContinueInput)
             {
                 string command = Console.ReadLine();

@@ -162,13 +162,14 @@ namespace AdventOfCode
             SolvePuzzle(new FeedbackLoop());
 
         private static string SensorBoostTest() =>
-            SolvePuzzle(new SensorBoost(initialInput: 1));
+            SolvePuzzle(new SensorBoost(1));
 
         private static string SensorBoost() =>
-            SolvePuzzle(new SensorBoost(initialInput: 2));
+            SolvePuzzle(new SensorBoost(2));
 
         private static string SolvePuzzle(IPuzzle puzzle)
         {
+            puzzle.DataLoader = AdventSolver.DataLoader;
             puzzle.LoadData();
             puzzle.Solve();
             return puzzle.ResultText;
