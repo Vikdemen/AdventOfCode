@@ -29,6 +29,7 @@ namespace AdventOfCode
             ShowImage,
             FeedbackLoop,
             AmplificationCircuit,
+            SensorBoostTest,
             SensorBoost
         }
         
@@ -39,6 +40,7 @@ namespace AdventOfCode
         private static readonly IDictionary<string, CommandID> CommandsByName = new Dictionary<string, CommandID>
         {
             ["sensor-boost"] = CommandID.SensorBoost,
+            ["sensor-test"] = CommandID.SensorBoostTest,
             ["feedback-loop"] = CommandID.FeedbackLoop,
             ["amplification-circuit"] = CommandID.AmplificationCircuit,
             ["show-image"] = CommandID.ShowImage,
@@ -86,6 +88,7 @@ namespace AdventOfCode
                 [CommandID.ShowImage] = ShowImage,
                 [CommandID.FeedbackLoop] = FeedbackLoop,
                 [CommandID.AmplificationCircuit] = AmplificationCircuit,
+                [CommandID.SensorBoostTest] = SensorBoostTest,
                 [CommandID.SensorBoost] = SensorBoost
             };
 
@@ -158,8 +161,11 @@ namespace AdventOfCode
         private static string FeedbackLoop() =>
             SolvePuzzle(new FeedbackLoop());
 
+        private static string SensorBoostTest() =>
+            SolvePuzzle(new SensorBoost(initialInput: 1));
+
         private static string SensorBoost() =>
-            SolvePuzzle(new SensorBoost());
+            SolvePuzzle(new SensorBoost(initialInput: 2));
 
         private static string SolvePuzzle(IPuzzle puzzle)
         {

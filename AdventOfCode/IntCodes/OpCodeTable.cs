@@ -84,12 +84,10 @@ namespace AdventOfCode.IntCodes
         //decreases, if the value is negative) by the value of the parameter.
         private static void Op9 (Memory memory, params long[] parameters)
         {
-            memory.RelativeBase = memory[parameters[0]];
+            memory.RelativeBase += memory[parameters[0]];
             memory.Pointer += 2;
         }
         
-        
-
         private static void Op99(Memory memory, params long[] parameters)
         {
             memory.Halt();
