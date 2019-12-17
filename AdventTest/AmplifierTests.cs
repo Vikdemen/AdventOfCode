@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using AdventOfCode;
-using AdventOfCode.IntCodes;
+using AdventOfCode.Computers;
+using AdventOfCode.IntCode;
 using AdventOfCode.Puzzles;
 
 namespace AdventTest
@@ -17,7 +18,7 @@ namespace AdventTest
         {
             long[] program = InstructionParser.Parse(instructions);
             var amplifier = new AmplifierChain(program, 5);
-            int result = amplifier.Run(sequence);
+            int result = (int)amplifier.Run(sequence)[0];
             Assert.AreEqual(signal, result);
         }
 
@@ -40,7 +41,7 @@ namespace AdventTest
         {
             long[] program = InstructionParser.Parse(instructions);
             var amplifier = new FeedbackChain(program, 5);
-            int result = amplifier.Run(sequence);
+            int result = (int)amplifier.Run(sequence)[0];
             Assert.AreEqual(signal, result);
         }
     }

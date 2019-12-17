@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace AdventOfCode.Passwords
+﻿namespace AdventOfCode.Passwords
 {
     public interface IPasswordValidator
     { 
@@ -45,16 +43,6 @@ namespace AdventOfCode.Passwords
                     return false;
             }
             return true;
-        }
-    }
-
-    public class AdvancedPasswordValidator: PasswordValidator
-    {
-        //checks if the group of same numbers is exactly 2 digits long.
-        protected override bool CheckForPair()
-        {
-            return Password.Select(number => Password.Count(anotherNumber => number == anotherNumber))
-                .Any(count => count == 2);
         }
     }
 }

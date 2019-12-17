@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace AdventOfCode.IntCodes
+namespace AdventOfCode.IntCode
 {
     public static class OpCodeTable
     {
@@ -29,7 +29,7 @@ namespace AdventOfCode.IntCodes
         {
             if (memory.HasInput())
             {
-                memory[parameters[0]] = memory.Input;
+                memory[parameters[0]] = memory.InputQueue.Dequeue();
                 //that's why we must take pointers, not raw values, as input
                 memory.Pointer += 2;
             }
@@ -40,7 +40,7 @@ namespace AdventOfCode.IntCodes
         //Opcode 4 outputs the value of its only parameter.
         private static void Op4(Memory memory, params long[] parameters)
         {
-            memory.Output = memory[parameters[0]];
+            memory.OutputQueue.Enqueue(memory[parameters[0]]);
             memory.Pointer += 2;
         }
 
@@ -88,6 +88,7 @@ namespace AdventOfCode.IntCodes
             memory.Pointer += 2;
         }
         
+        //Halts the operation
         private static void Op99(Memory memory, params long[] parameters)
         {
             memory.Halt();
@@ -119,8 +120,7 @@ namespace AdventOfCode.IntCodes
         
         public enum OpCodeID
         {
-            Op1, Op2, Op3, Op4, Op5, Op6, Op7, Op8, Op99, Invalid,
-            Op9
+            Op1, Op2, Op3, Op4, Op5, Op6, Op7, Op8, Op9, Op99, Invalid,
         };
         
     }

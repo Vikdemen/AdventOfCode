@@ -16,9 +16,9 @@ namespace AdventOfCode.Puzzles
         public IDataLoader DataLoader { get; set; }
         
         //if no data loader defined, returns empty array
-        public void LoadData()
+        public void LoadData(IDataLoader dataLoader)
         {
-            PuzzleInput = DataLoader?.GetData(InputFile) ?? Array.Empty<string>();
+            PuzzleInput = dataLoader?.GetData(InputFile) ?? Array.Empty<string>();
         }
 
         public void Process(string[] puzzleInput)
@@ -26,14 +26,5 @@ namespace AdventOfCode.Puzzles
             PuzzleInput = puzzleInput;
         }
         public abstract void Solve();
-    }
-
-    public interface IPuzzle
-    {
-        string ResultText { get; }
-        long Result { get; }
-        IDataLoader DataLoader { get; set; }
-        void LoadData();
-        void Solve();
     }
 }

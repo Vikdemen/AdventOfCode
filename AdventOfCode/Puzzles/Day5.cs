@@ -1,4 +1,5 @@
-﻿using AdventOfCode.IntCodes;
+﻿using AdventOfCode.Computers;
+using AdventOfCode.IntCode;
 
 namespace AdventOfCode.Puzzles
 {
@@ -25,8 +26,7 @@ namespace AdventOfCode.Puzzles
         {
             string instructions = PuzzleInput[0];
             var computer = new Computer(InstructionParser.Parse(instructions));
-            computer.Run(InputInstruction);
-            int code = computer.Output;
+            int code = computer.Run(InputInstruction);
         }
     }
 }

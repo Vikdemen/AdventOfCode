@@ -1,4 +1,4 @@
-﻿using AdventOfCode.IntCodes;
+﻿using AdventOfCode.IntCode;
 
 namespace AdventOfCode.Puzzles
 {

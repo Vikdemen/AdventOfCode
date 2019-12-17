@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Text;
+using System.Net.NetworkInformation;
 using AdventOfCode.SpaceImages;
 
 namespace AdventOfCode.Puzzles
@@ -70,22 +70,7 @@ namespace AdventOfCode.Puzzles
         private string ShowImage()
         {
             int[,] clearImage = Image.ReadImage();
-            var ascii = new StringBuilder();
-            for (int y = 0; y < Height; y++)
-            {
-                string row = "";
-                for (int x = 0; x < Width; x++)
-                {
-                    row += clearImage[y, x].ToString();
-                }
-
-                //primitive graphics
-                row = row.Replace('1', 'O');
-                row = row.Replace('0', ' ');
-                ascii.AppendLine(row);
-            }
-
-            return ascii.ToString();
+            return Imager.ShowImage(clearImage);
         }
     }
 }

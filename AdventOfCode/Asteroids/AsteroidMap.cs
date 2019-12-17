@@ -1,10 +1,9 @@
-﻿using System.Net.Configuration;
-using AdventOfCode.Puzzles;
-
-namespace AdventOfCode.Asteroids
+﻿namespace AdventOfCode.Asteroids
 {
     public class AsteroidMap
     {
+        //a class responsible for showing positions of asteroids
+        //unfinished
         private bool[,] map;
 
         public AsteroidMap(bool[,] map)
@@ -21,7 +20,10 @@ namespace AdventOfCode.Asteroids
                 {
                     //if the position has asteroid
                     if (map[i, j])
-                        if(CheckLOS());
+                        if(CheckLOS())
+                        {
+                        }
+
                     count++;
                 }
             }

@@ -2,6 +2,7 @@
 using System.Security.Cryptography;
 using NUnit.Framework;
 using AdventOfCode;
+using AdventOfCode.Wires;
 
 namespace AdventTest
 {

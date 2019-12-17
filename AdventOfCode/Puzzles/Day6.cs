@@ -1,4 +1,6 @@
-﻿namespace AdventOfCode.Puzzles
+﻿using AdventOfCode.Orbits;
+
+namespace AdventOfCode.Puzzles
 {
     public class OrbitChecker: Puzzle, IPuzzle
     {

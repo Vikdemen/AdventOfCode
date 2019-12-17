@@ -1,5 +1,6 @@
 ﻿using System;
-using AdventOfCode.IntCodes;
+using AdventOfCode.Computers;
+using AdventOfCode.IntCode;
 
 namespace AdventOfCode.Puzzles
 {
@@ -37,11 +38,9 @@ namespace AdventOfCode.Puzzles
         public override void Solve()
         {
             long[] program = InstructionParser.Parse(PuzzleInput[0]);
-            var memory = new Memory(program);
-            memory.Input = initialInput;
-            memory.Start();
-            long[] outputs = memory.OutputQueue.ToArray();
-            foreach (var item in outputs)
+            var computer = new Computer(program);
+            long[] outputs = computer.Run(new []{initialInput});
+            foreach (long item in outputs)
             {
                 Console.WriteLine(item.ToString());
             }

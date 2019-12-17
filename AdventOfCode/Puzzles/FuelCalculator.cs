@@ -1,4 +1,5 @@
 ﻿using System;
+using AdventOfCode.Fuel;
 
 namespace AdventOfCode.Puzzles
 {
@@ -16,8 +17,12 @@ namespace AdventOfCode.Puzzles
 
         public override void Solve()
         {
-            Result = Rocket.FuelForModules(Array.ConvertAll(PuzzleInput, int.Parse));
+            var data = Array.ConvertAll(PuzzleInput, int.Parse);
+            Result = CalculateFuel(data);
         }
+
+        protected virtual int CalculateFuel(int[] data) =>
+            Rocket.FuelForModules(data);
     }
 
     public class FuelForFuelCalculator : FuelCalculator
@@ -30,9 +35,8 @@ namespace AdventOfCode.Puzzles
         //What is the sum of the fuel requirements for all of the modules on your spacecraft when also taking into
         //account the mass of the added fuel? (Calculate the fuel requirements for each module separately, then add them
         //all up at the end.)
-        public override void Solve()
-        {
-            Result = Rocket.FuelForModulesRecursive(Array.ConvertAll(PuzzleInput, int.Parse));
-        }
+
+        protected override int CalculateFuel(int[] data) => 
+            Rocket.FuelForModulesRecursive(data);
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AdventOfCode.IntCodes
+namespace AdventOfCode.IntCode
 {
     public static class InstructionParser
     {

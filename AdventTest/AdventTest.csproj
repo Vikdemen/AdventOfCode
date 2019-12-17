@@ -45,8 +45,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AmplifierTests.cs" />
+    <Compile Include="ComputerTest.cs" />
     <Compile Include="IntCodeTests.cs" />
     <Compile Include="OrbitMapTests.cs" />
+    <Compile Include="PaintingRobotTest.cs" />
     <Compile Include="PasswordTest.cs" />
     <Compile Include="RocketTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -1,7 +1,7 @@
 ﻿using System.Linq;
-using static AdventOfCode.IntCodes.OpCodeTable;
+using static AdventOfCode.IntCode.OpCodeTable;
 
-namespace AdventOfCode.IntCodes
+namespace AdventOfCode.IntCode
 {
     //Parameter modes are stored in the same value as the instruction's opcode. The opcode is a two-digit number
     //based only on the ones and tens digit of the value, that is, the opcode is the rightmost two digits of the
@@ -10,6 +10,8 @@ namespace AdventOfCode.IntCodes
     //thousands digit, the third parameter's mode is in the ten-thousands digit, and so on. Any missing modes are 0.
     public class IntCodeInstruction
     {
+        //class responsible for deciphering the instuction code
+        
         private readonly OpCode opCode;
         private readonly ParameterMode[] parameterModes;
 

@@ -1,4 +1,4 @@
-﻿using AdventOfCode.IntCodes;
+﻿using AdventOfCode.Computers;
 
 namespace AdventOfCode.Puzzles
 {
@@ -25,7 +25,7 @@ namespace AdventOfCode.Puzzles
         {
             FeedbackMode = true;
         }
-        protected override ICircuit CreateAmplifier(long[] program)
+        protected override IComputer CreateAmplifier(long[] program)
         {
             return new FeedbackChain(program, NumberOfAmplifiers);
         }

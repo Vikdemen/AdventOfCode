@@ -8,7 +8,7 @@ namespace AdventOfCode
     {
         public static bool ContinueInput { get; set; } = true;
 
-        public static IDataLoader DataLoader { get; private set; }
+        public static FileLoader DataLoader { get; private set; }
 
         public static void Main()
         {
@@ -27,7 +27,7 @@ namespace AdventOfCode
         private static string ExecuteCommand(string commandName)
         {
             CommandID commandID = GetCommand(commandName);
-            CommandAction action = GetAction(commandID);
+            Func<string> action = GetAction(commandID);
             string result = action();
             return result;
         }

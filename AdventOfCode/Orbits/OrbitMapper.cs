@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace AdventOfCode
+namespace AdventOfCode.Orbits
 {
     public class OrbitMapper
         {

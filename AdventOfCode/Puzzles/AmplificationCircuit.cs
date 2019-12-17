@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using AdventOfCode.IntCodes;
+using AdventOfCode.Computers;
+using AdventOfCode.IntCode;
 
 namespace AdventOfCode.Puzzles
 {
@@ -32,14 +33,14 @@ namespace AdventOfCode.Puzzles
             
             List<int[]> phaseSettingsVariants = PhaseGenerator.GeneratePhaseSettings(FeedbackMode);
             
-            ICircuit amplifierChain = CreateAmplifier(program);
+            var amplifierChain = CreateAmplifier(program);
             
             int largestSignal = phaseSettingsVariants
-                .Select(variant => amplifierChain.Run(variant)).Max();
+                .Select(variant => (int)amplifierChain.Run(variant)[0]).Max();
             Result = largestSignal;
         }
 
-        protected virtual ICircuit CreateAmplifier(long[] program)
+        protected virtual IComputer CreateAmplifier(long[] program)
         {
             return new AmplifierChain(program, NumberOfAmplifiers);
         }

@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using AdventOfCode.Passwords;
 using AdventOfCode.Puzzles;
+using static AdventOfCode.AdventSolver;
 
 namespace AdventOfCode
 {
     public static class ConsoleCommands
     {
         //class that holds references for various console commands
+        
+        //a list of said commands
         public enum CommandID
         {
             Help,
@@ -30,7 +33,9 @@ namespace AdventOfCode
             FeedbackLoop,
             AmplificationCircuit,
             SensorBoostTest,
-            SensorBoost
+            SensorBoost,
+            CountPainted,
+            RegistrationImage
         }
         
         //returns either command from a dictionary or "unknown" command
@@ -39,6 +44,8 @@ namespace AdventOfCode
 
         private static readonly IDictionary<string, CommandID> CommandsByName = new Dictionary<string, CommandID>
         {
+            ["registration-image"] = CommandID.RegistrationImage,
+            ["count-painted"] = CommandID.CountPainted,
             ["sensor-boost"] = CommandID.SensorBoost,
             ["sensor-test"] = CommandID.SensorBoostTest,
             ["feedback-loop"] = CommandID.FeedbackLoop,
@@ -61,13 +68,11 @@ namespace AdventOfCode
             ["exit"] = CommandID.Exit
         };
 
-        public delegate string CommandAction();
-
-        public static CommandAction GetAction(CommandID commandID) =>
+        public static Func<string> GetAction(CommandID commandID) =>
             ActionForCommand[commandID];
 
-        private static readonly IDictionary<CommandID, CommandAction> ActionForCommand
-            = new Dictionary<CommandID, CommandAction>
+        private static readonly IDictionary<CommandID, Func<string>> ActionForCommand
+            = new Dictionary<CommandID, Func<string>>
             {
                 [CommandID.Exit] = Exit,
                 [CommandID.Help] = ListCommands,
@@ -89,7 +94,9 @@ namespace AdventOfCode
                 [CommandID.FeedbackLoop] = FeedbackLoop,
                 [CommandID.AmplificationCircuit] = AmplificationCircuit,
                 [CommandID.SensorBoostTest] = SensorBoostTest,
-                [CommandID.SensorBoost] = SensorBoost
+                [CommandID.SensorBoost] = SensorBoost,
+                [CommandID.CountPainted] = CountPainted,
+                [CommandID.RegistrationImage] = RegistrationImage
             };
 
 
@@ -106,8 +113,20 @@ namespace AdventOfCode
 
         private static string Exit()
         {
-            AdventSolver.ContinueInput = false;
+            ContinueInput = false;
             return "Program finished, exiting";
+        }
+
+        private static string ChangeInputFolder()
+        {
+            //i should do it with parameters, actually
+            Console.WriteLine("Enter the new input folder path, please");
+            string path = Console.ReadLine();
+            if (DataLoader != null)
+                DataLoader.InputFolder = path + @"\";
+            else
+                return "No file loader instance found";
+            return "Input folder changed";
         }
 
         private static string UnknownCommand() =>
@@ -167,10 +186,15 @@ namespace AdventOfCode
         private static string SensorBoost() =>
             SolvePuzzle(new SensorBoost(2));
 
+        private static string CountPainted() =>
+            SolvePuzzle(new SpacePolice());
+
+        private static string RegistrationImage() =>
+            SolvePuzzle(new RegistrationImage());
+
         private static string SolvePuzzle(IPuzzle puzzle)
         {
-            puzzle.DataLoader = AdventSolver.DataLoader;
-            puzzle.LoadData();
+            puzzle.LoadData(DataLoader);
             puzzle.Solve();
             return puzzle.ResultText;
         }

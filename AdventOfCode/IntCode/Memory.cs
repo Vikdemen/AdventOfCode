@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace AdventOfCode.IntCodes
+namespace AdventOfCode.IntCode
 {
     public class Memory
     {
@@ -37,27 +37,12 @@ namespace AdventOfCode.IntCodes
         public bool Halted { get; private set; }
         public bool Paused { get; private set; }
 
-        private readonly Queue<long> inputQueue = new Queue<long>();
-        public int Input
-        {
-            get => (int)inputQueue.Dequeue();
-            set => inputQueue.Enqueue(value);
-        }
+        public Queue<long> InputQueue { get; } = new Queue<long>();
         //important - each input value may be used only once
+
         public bool HasInput()
         {
-            return inputQueue.Count != 0;
-        }
-
-        public long Output
-        {
-            get
-            {
-                if (OutputQueue.Any())
-                    return OutputQueue.Dequeue();
-                return -1;
-            }
-            set => OutputQueue.Enqueue(value);
+            return InputQueue.Count != 0;
         }
 
         public Queue<long> OutputQueue { get; } = new Queue<long>();
