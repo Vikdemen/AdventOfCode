@@ -15,6 +15,7 @@ namespace AdventOfCode
         {
             Help,
             Exit,
+            ChangeFolder,
             UnknownCommand,
             CalculateFuel,
             FuelForFuel,
@@ -35,7 +36,7 @@ namespace AdventOfCode
             SensorBoostTest,
             SensorBoost,
             CountPainted,
-            RegistrationImage
+            RegistrationImage,
         }
         
         //returns either command from a dictionary or "unknown" command
@@ -76,9 +77,10 @@ namespace AdventOfCode
             {
                 [CommandID.Exit] = Exit,
                 [CommandID.Help] = ListCommands,
+                [CommandID.ChangeFolder] = ChangeInputFolder,
                 [CommandID.UnknownCommand] = UnknownCommand,
-                [CommandID.CalculateFuel] = CalculateFuel,
-                [CommandID.FuelForFuel] = FuelForFuel,
+                [CommandID.CalculateFuel] = FuelCalculator.CalculateFuel,
+                [CommandID.FuelForFuel] = FuelForFuelCalculator.FuelForFuel,
                 [CommandID.ProgramAlarm] = ProgramAlarm,
                 [CommandID.GravityAssist] = GravityAssist,
                 [CommandID.CrossedWires] = CrossedWires,
@@ -132,12 +134,6 @@ namespace AdventOfCode
         private static string UnknownCommand() =>
             "Unknown command, please print help for command list";
 
-        private static string CalculateFuel() => 
-            SolvePuzzle(new FuelCalculator());
-
-        private static string FuelForFuel() => 
-            SolvePuzzle(new FuelForFuelCalculator());
-
         private static string ProgramAlarm() => 
             SolvePuzzle(new ProgramAlarm());
 
@@ -163,7 +159,7 @@ namespace AdventOfCode
             SolvePuzzle(new Diagnostics {InputInstruction = 5});
 
         private static string OrbitCheckSum() => 
-            SolvePuzzle(new OrbitChecker());
+            SolvePuzzle(new UniversalOrbitMap());
 
         private static string TransferToSanta() => 
             SolvePuzzle(new OrbitTransferPlanner());
@@ -192,11 +188,12 @@ namespace AdventOfCode
         private static string RegistrationImage() =>
             SolvePuzzle(new RegistrationImage());
 
-        private static string SolvePuzzle(IPuzzle puzzle)
+        public static string SolvePuzzle(IPuzzle puzzle)
         {
             puzzle.LoadData(DataLoader);
             puzzle.Solve();
             return puzzle.ResultText;
         }
+        //todo - relocate to Puzzle class
     }
 }

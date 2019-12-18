@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Xml;
 using AdventOfCode.Computers;
 
 namespace AdventOfCode.Painting
@@ -11,8 +13,8 @@ namespace AdventOfCode.Painting
         public IComputer Brain { get; set; }
 
         //and moves over a grid of panels
-        //since i have no idea how big i need a grid, i'll just make a hashset of white panels
-        //private readonly HashSet<(int, int)> whiteTiles = new HashSet<(int, int)>();
+        //since i have no idea how big i need a grid, i'll try 101x101
+        //default value for ints is 0, so grid would be black
         public int[,] TileGrid { get; } = new int[101, 101];
 
         //direction "up" is considered 0 degrees
@@ -20,12 +22,17 @@ namespace AdventOfCode.Painting
         private int direction = 0;
 
         //position on a tile grid
+        //the starting position is right in the middle of it to avoid negative indexes
         private (int x, int y) position = (50, 50);
 
         //a set of every tile painted by a robot, regardless of color
         private readonly HashSet<(int, int)> paintedTiles = new HashSet<(int, int)>();
         //and a way to count them
         public int PaintedCount => paintedTiles.Count;
+        
+        private const int White = 0;
+        private const int Black = 1;
+            
 
         public PaintingRobot(long[] instructions)
         {
@@ -33,11 +40,16 @@ namespace AdventOfCode.Painting
         }
 
         //all input is from camera
+        //you can either start on uniformly black grid
+        //or a sole white tile
+        
         public void Start(bool startOnWhite = false)
         {
+            //makes the starting tile white without marking as painted
             if (startOnWhite)
-                //whiteTiles.Add((0, 0));
-                TileGrid[position.x, position.y] = 1;
+                TileGrid[position.x, position.y] = White;
+
+            //runs until program halts, taking 1 input and giving 2 outputs per cycle.
             while (!Brain.Finished)
             {
                 int color = CheckCamera();
@@ -56,25 +68,34 @@ namespace AdventOfCode.Painting
         private int CheckCamera()
         {
             return TileGrid[position.x, position.y];
-            //whiteTiles.Contains(position) ? 1 : 0;
         }
 
+        //1 is turn left, 0 is turn right
+        //you always do a 90 degree turn and then move for 1 tile
         private void TurnAndMove(int input)
         {
-            if (input == 1)
-                direction += 90;
-            else
-                direction -= 90;
-
+            switch (input)
+            {
+                case 0:
+                    direction += 90;
+                    break;
+                case 1:
+                    direction -= 90;
+                    break;
+                default:
+                    throw new ArgumentException($"{input} is not a valid direction for painting robot");
+            }
+            
+            //degrees should be between 0 and 360
             if (direction < 0)
                 direction = (360 + direction);
             if (direction >= 360)
                 direction = direction - 360;
             
+            //after turning always move exactly 1 unit forward
             Move();
         }
-
-        //after turning always move exactly 1 unit forward
+        
         private void Move()
         {
             position = direction switch
@@ -83,7 +104,8 @@ namespace AdventOfCode.Painting
                 90 => (position.x + 1, position.y),
                 180 => (position.x, position.y - 1),
                 270 => (position.x - 1, position.y),
-                _ => position
+                _ => throw new ArgumentException
+                    ($"{direction} is not a valid heading for painting robot")
                 //doesn't work on diagonals yet
             };
         }
@@ -91,12 +113,6 @@ namespace AdventOfCode.Painting
         //paints the tile in a chosen color and marks it as painted
         private void Paint(int color)
         {
-            /*
-            if (color == 1)
-                whiteTiles.Add(position);
-            else
-                whiteTiles.Remove(position);
-            */
             TileGrid[position.x, position.y] = color;
             
             //since it's a hashset, we shouldn't worry about duplicates

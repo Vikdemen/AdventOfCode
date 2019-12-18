@@ -2,7 +2,7 @@
 
 namespace AdventOfCode.Puzzles
 {
-    public class OrbitChecker: Puzzle, IPuzzle
+    public class UniversalOrbitMap: Puzzle, IPuzzle
     {
         //--- Day 6: Universal Orbit Map ---
         //To verify maps, the Universal Orbit Map facility uses orbit count checksums - the total number of direct
@@ -30,7 +30,7 @@ namespace AdventOfCode.Puzzles
         }
     }
     
-    public class OrbitTransferPlanner : OrbitChecker
+    public class OrbitTransferPlanner : UniversalOrbitMap
     {
         //--- Part Two ---
         //Now, you just need to figure out how many orbital transfers you (YOU) need to take to get to Santa (SAN).

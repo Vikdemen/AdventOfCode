@@ -54,7 +54,7 @@ namespace AdventOfCode.Puzzles
         protected override bool StartOnWhite => true;
         protected override void ShowResult(int [,] grid)
         {
-            resultImage = Imager.ShowImage(grid);
+            resultImage = Imager.ImageToString(grid);
         }
     }
 }

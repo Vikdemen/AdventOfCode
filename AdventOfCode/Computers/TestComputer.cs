@@ -5,7 +5,7 @@ namespace AdventOfCode.Computers
 {
     public class TestComputer: IComputer
     {
-        //a mock computer that produces a series of outputs
+        //a mock computer that produces a series of outputs for tesing painting robot
         public bool Finished { get; set; }
 
         public List<int> inputList = new List<int>();

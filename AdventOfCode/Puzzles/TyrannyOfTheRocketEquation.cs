@@ -14,6 +14,9 @@ namespace AdventOfCode.Puzzles
         
         protected override string InputFile => "day1.txt";
         public override string ResultText => $"We need {Result.ToString()} fuel in total";
+        
+        public static string CalculateFuel() => 
+            SolvePuzzle(new FuelCalculator());
 
         public override void Solve()
         {
@@ -36,6 +39,9 @@ namespace AdventOfCode.Puzzles
         //account the mass of the added fuel? (Calculate the fuel requirements for each module separately, then add them
         //all up at the end.)
 
+        public static string FuelForFuel() => 
+            SolvePuzzle(new FuelForFuelCalculator());
+        
         protected override int CalculateFuel(int[] data) => 
             Rocket.FuelForModulesRecursive(data);
     }

@@ -70,7 +70,7 @@ namespace AdventOfCode.Puzzles
         private string ShowImage()
         {
             int[,] clearImage = Image.ReadImage();
-            return Imager.ShowImage(clearImage);
+            return Imager.ImageToString(clearImage);
         }
     }
 }

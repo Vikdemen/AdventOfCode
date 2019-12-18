@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace AdventOfCode.Puzzles
+namespace AdventOfCode.Computers
 {
     public static class PhaseGenerator
     { 
