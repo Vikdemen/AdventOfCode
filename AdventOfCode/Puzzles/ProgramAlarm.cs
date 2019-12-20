@@ -11,15 +11,15 @@ namespace AdventOfCode.Puzzles
         //at position 0 after the program halts?
         
         protected override string InputFile => "day2.txt";
-        public override string ResultText => $"Program finished, {Result.ToString()}" ;
 
-        public override void Solve()
+        public override string Solve()
         {
             string instructions = PuzzleInput[0];
             long[] program = InstructionParser.Parse(instructions);
             program[1] = 1;
             program[2] = 2;
-            Result = GetResult(program);
+            int result = GetResult(program);
+            return $"Program finished, {result.ToString()}";
         }
 
         protected virtual int GetResult(long[] program)
@@ -41,7 +41,8 @@ namespace AdventOfCode.Puzzles
         //pair of inputs, make sure you first reset the computer's memory to the values in the program (your puzzle
         //input) - in other words, don't reuse memory from a previous attempt.
         //Find the input noun and verb that cause the program to produce the output 19690720. What is 100 * noun + verb?
-        public override string ResultText => $"You need to input {Result.ToString()}" ;
+        
+        //public override string ResultText => $"You need to input {Result.ToString()}" ;
         private int Target { get; }
 
         public GravityAssist(int target = 19690720)

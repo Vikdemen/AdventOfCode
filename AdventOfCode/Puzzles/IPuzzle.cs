@@ -4,9 +4,8 @@ namespace AdventOfCode.Puzzles
 {
     public interface IPuzzle
     {
-        string ResultText { get; }
-        long Result { get; }
         void LoadData(IDataLoader dataLoader);
-        void Solve();
+        void LoadData(string[] data);
+        string Solve();
     }
 }

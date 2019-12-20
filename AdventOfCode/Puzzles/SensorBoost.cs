@@ -27,7 +27,7 @@ namespace AdventOfCode.Puzzles
         //Run the BOOST program in sensor boost mode. What are the coordinates of the distress signal?
         
         protected override string InputFile => "day9.txt";
-        public override string ResultText => $"BOOST keycode is {Result.ToString()}";
+        
         private int initialInput;
 
         public SensorBoost(int initialInput)
@@ -35,7 +35,7 @@ namespace AdventOfCode.Puzzles
             this.initialInput = initialInput;
         }
 
-        public override void Solve()
+        public override string Solve()
         {
             long[] program = InstructionParser.Parse(PuzzleInput[0]);
             var computer = new Computer(program);
@@ -44,7 +44,7 @@ namespace AdventOfCode.Puzzles
             {
                 Console.WriteLine(item.ToString());
             }
-            Result = outputs[0];
+            return $"BOOST keycode is {outputs[0].ToString()}";
         }
     }
 }

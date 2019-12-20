@@ -16,16 +16,16 @@ namespace AdventOfCode.Puzzles
         //this point does not count, nor does a wire count as crossing with itself.
         //What is the Manhattan distance from the central port to the closest intersection?
         protected override string InputFile => "day3.txt";
-        public override string ResultText => $"Distance to closest intersection is {Result.ToString()}";
 
         protected Wire Wire0;
         protected Wire Wire1;
         
-        public override void Solve()
+        public override string Solve()
         {
             Wire0 = new Wire(PuzzleInput[0]);
             Wire1 = new Wire(PuzzleInput[1]);
-            Result = Calculate();
+            int result = Calculate();
+            return $"Distance to closest intersection is {result.ToString()}";
         }
 
         protected virtual int Calculate() =>
@@ -42,7 +42,15 @@ namespace AdventOfCode.Puzzles
         //The number of steps a wire takes is the total number of grid squares the wire has entered to get to that
         //location, including the intersection being considered.
         //What is the fewest combined steps the wires must take to reach an intersection?
-        public override string ResultText => $"Smallest signal delay is {Result.ToString()}";
+
+        public override string Solve()
+        {
+            Wire0 = new Wire(PuzzleInput[0]);
+            Wire1 = new Wire(PuzzleInput[1]);
+            int result = Calculate();
+            return $"Smallest signal delay is {result.ToString()}";
+        }
+        
         protected override int Calculate()
         {
             List<Point> intersections = Wire.Intersect(Wire0, Wire1);

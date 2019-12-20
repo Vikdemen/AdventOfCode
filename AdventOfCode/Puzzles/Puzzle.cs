@@ -5,33 +5,27 @@ namespace AdventOfCode.Puzzles
 {
     public abstract class Puzzle
     {
-        public static string SolvePuzzle(IPuzzle puzzle)
-        {
-            puzzle.LoadData(AdventSolver.DataLoader);
-            puzzle.Solve();
-            return puzzle.ResultText;
-        }
-
         protected abstract string InputFile { get; }
         //hardcoded in child classes for now
-
         public string[] PuzzleInput { get; set; }
-        
-        public abstract string ResultText { get; }
-        public long Result { get; protected set; }
-
-        public IDataLoader DataLoader { get; set; }
         
         //if no data loader defined, returns empty array
         public void LoadData(IDataLoader dataLoader)
         {
             PuzzleInput = dataLoader?.GetData(InputFile) ?? Array.Empty<string>();
         }
-
-        public void Process(string[] puzzleInput)
+        
+        public void LoadData(string[] data)
         {
-            PuzzleInput = puzzleInput;
+            PuzzleInput = data;
         }
-        public abstract void Solve();
+
+        public abstract string Solve();
+
+        public static string SolvePuzzle(IPuzzle puzzle)
+        {
+            puzzle.LoadData(AdventSolver.DataLoader);
+            return puzzle.Solve();
+        }
     }
 }

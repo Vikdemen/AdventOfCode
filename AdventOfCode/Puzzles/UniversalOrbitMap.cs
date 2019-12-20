@@ -9,13 +9,12 @@ namespace AdventOfCode.Puzzles
         //orbits (like the one shown above) and indirect orbits.
         //What is the total number of direct and indirect orbits in your map data?
         protected override string InputFile => "day6.txt";
-        public override string ResultText => $"There are {Result.ToString()} orbits total!";
         protected OrbitMapper Mapper;
         
-        public override void Solve()
+        public override string Solve()
         {
             PrepareMap();
-            GetResult();
+            return GetResult();
         }
 
         public void PrepareMap()
@@ -24,9 +23,10 @@ namespace AdventOfCode.Puzzles
             Mapper.GenerateMap(PuzzleInput);
         }
 
-        protected virtual void GetResult ()
+        protected virtual string GetResult ()
         {
-            Result = Mapper.GetCheckSum();
+            int totalOrbits = Mapper.GetCheckSum();
+            return $"There are {totalOrbits.ToString()} orbits total!";
         }
     }
     
@@ -36,13 +36,13 @@ namespace AdventOfCode.Puzzles
         //Now, you just need to figure out how many orbital transfers you (YOU) need to take to get to Santa (SAN).
         //What is the minimum number of orbital transfers required to move from the object YOU are orbiting to the
         //object SAN is orbiting?
-        public override string ResultText => $"You need {Result.ToString()} orbital transfers!";
 
-        protected override void GetResult ()
+        protected override string GetResult ()
         {
-            Result = Mapper.CountTransfers("YOU", "SAN");
+            int transfers = Mapper.CountTransfers("YOU", "SAN");
             //Between the objects they are orbiting - not between YOU and SAN.)
-            Result -= 2;
+            transfers -= 2;
+            return $"You need {transfers.ToString()} orbital transfers!";
         }
     }
 }
