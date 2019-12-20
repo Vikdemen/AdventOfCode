@@ -46,6 +46,8 @@ namespace AdventOfCode.Asteroids
         //the top-left is (0,0) such that pixel coordinates increase in the right and down directions
         //(e.g. that the pixel at (7,4) is directly above the pixel at (7,5))
         //and the pixel centers have integer coordinates.
+        
+        //It seems that Bresenham doesn't accurately represent the rules for "seeing" asteroids
         private HashSet<Vector2> Bresenham(Vector2 start, Vector2 end)
         {
             HashSet<Vector2> line = new HashSet<Vector2>();

@@ -5,14 +5,7 @@ namespace AdventOfCode.Puzzles
 {
     public abstract class Puzzle
     {
-        public static string SolvePuzzle(IPuzzle puzzle)
-        {
-            puzzle.LoadData(AdventSolver.DataLoader);
-            puzzle.Solve();
-            return puzzle.ResultText;
-        }
-
-        protected abstract string InputFile { get; }
+       protected abstract string InputFile { get; }
         //hardcoded in child classes for now
 
         public string[] PuzzleInput { get; set; }
@@ -33,5 +26,12 @@ namespace AdventOfCode.Puzzles
             PuzzleInput = puzzleInput;
         }
         public abstract void Solve();
+        
+        public static string SolvePuzzle(IPuzzle puzzle)
+        {
+            puzzle.LoadData(AdventSolver.DataLoader);
+            puzzle.Solve();
+            return puzzle.ResultText;
+        }
     }
 }

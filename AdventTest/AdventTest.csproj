@@ -49,6 +49,7 @@
     <Compile Include="AsteroidTest.cs" />
     <Compile Include="ComputerTest.cs" />
     <Compile Include="IntCodeTests.cs" />
+    <Compile Include="MoonSystemTests.cs" />
     <Compile Include="OrbitMapTests.cs" />
     <Compile Include="PaintingRobotTest.cs" />
     <Compile Include="PasswordTest.cs" />

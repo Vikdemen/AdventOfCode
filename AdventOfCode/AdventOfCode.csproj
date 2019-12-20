@@ -61,12 +61,15 @@
     <Compile Include="IntCode\Memory.cs" />
     <Compile Include="IntCode\OpCode.cs" />
     <Compile Include="IntCode\OpCodeTable.cs" />
+    <Compile Include="Moons\Moon.cs" />
+    <Compile Include="Moons\MoonSystem.cs" />
     <Compile Include="Orbits\OrbitMapper.cs" />
     <Compile Include="Painting\PaintingRobot.cs" />
     <Compile Include="Passwords\AdvancedPasswordValidator.cs" />
     <Compile Include="Passwords\PasswordValidator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Puzzles\AmplificationCircuit.cs" />
+    <Compile Include="Puzzles\NBodyProblem.cs" />
     <Compile Include="Puzzles\ProgramAlarm.cs" />
     <Compile Include="Puzzles\TyrannyOfTheRocketEquation.cs" />
     <Compile Include="Puzzles\CrossedWires.cs" />
@@ -88,6 +91,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="AdventData\day11.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AdventData\day12.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="AdventData\day2.txt">

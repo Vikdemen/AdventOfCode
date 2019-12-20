@@ -37,6 +37,7 @@ namespace AdventOfCode
             SensorBoost,
             CountPainted,
             RegistrationImage,
+            MoonsEnergy
         }
         
         //returns either command from a dictionary or "unknown" command
@@ -45,6 +46,7 @@ namespace AdventOfCode
 
         private static readonly IDictionary<string, CommandID> CommandsByName = new Dictionary<string, CommandID>
         {
+            ["moons-energy"] = CommandID.MoonsEnergy,
             ["registration-image"] = CommandID.RegistrationImage,
             ["count-painted"] = CommandID.CountPainted,
             ["sensor-boost"] = CommandID.SensorBoost,
@@ -98,7 +100,8 @@ namespace AdventOfCode
                 [CommandID.SensorBoostTest] = SensorBoostTest,
                 [CommandID.SensorBoost] = SensorBoost,
                 [CommandID.CountPainted] = CountPainted,
-                [CommandID.RegistrationImage] = RegistrationImage
+                [CommandID.RegistrationImage] = RegistrationImage,
+                [CommandID.MoonsEnergy] = NBodyProblem.CalculateMoonsEnergy
             };
 
 
