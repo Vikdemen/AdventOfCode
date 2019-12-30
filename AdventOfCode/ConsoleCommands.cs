@@ -69,7 +69,7 @@ namespace AdventOfCode
                 DataLoader.InputFolder = path + @"\";
             else
                 return "No file loader instance found";
-            return "Input folder changed";
+            return "Result folder changed";
         }
 
         private static string UnknownCommand() =>

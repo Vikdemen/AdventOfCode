@@ -7,7 +7,7 @@ namespace AdventOfCode.Puzzles
     {
         protected abstract string InputFile { get; }
         //hardcoded in child classes for now
-        public string[] PuzzleInput { get; set; }
+        protected string[] PuzzleInput { get; set; }
         
         //if no data loader defined, returns empty array
         public void LoadData(IDataLoader dataLoader)

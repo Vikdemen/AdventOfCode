@@ -54,6 +54,7 @@
     <Compile Include="DataLoading\FileLoader.cs" />
     <Compile Include="DataLoading\IDataLoader.cs" />
     <Compile Include="DataLoading\TestDataLoader.cs" />
+    <Compile Include="Fuel\OreProcessor.cs" />
     <Compile Include="Fuel\Rocket.cs" />
     <Compile Include="Imager.cs" />
     <Compile Include="IntCode\InstructionParser.cs" />
@@ -68,6 +69,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Puzzles\AmplificationCircuit.cs" />
     <Compile Include="Puzzles\ProgramAlarm.cs" />
+    <Compile Include="Puzzles\SpaceStoichiometry.cs" />
     <Compile Include="Puzzles\TyrannyOfTheRocketEquation.cs" />
     <Compile Include="Puzzles\CrossedWires.cs" />
     <Compile Include="Puzzles\SecureContainer.cs" />
