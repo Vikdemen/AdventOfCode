@@ -22,23 +22,17 @@ namespace AdventOfCode.Puzzles
 
         protected override string InputFile => "day8.txt";
 
-        public override string ResultText => $"Test finished. Number of 1 * 2 is {Result}";
-
         protected int Width = 25;
         protected int Height = 6;
         protected SpaceImage Image;
 
-        public override void Solve()
+        public override string Solve()
         {
             string input = PuzzleInput[0];
             Image = new SpaceImage(Width, Height, input);
-            Result = GetResult();
-        }
-
-        protected virtual int GetResult()
-        {
             var layer = Image.GetLeastCorruptedLayer();
-            return MultiplicationCount(layer);
+            int result = MultiplicationCount(layer);
+            return $"Test finished. Number of 1 * 2 is {result}";
         }
 
         public int MultiplicationCount(int[,] layer)
@@ -58,15 +52,15 @@ namespace AdventOfCode.Puzzles
     }
 
     public class SpaceImageReader : SpaceImageValidator
-    {
-        public override string ResultText => ShowImage();
-
-        protected override int GetResult()
+    { 
+        public override string Solve()
         {
-            //doesn't really matter
-            return 0;
+            string input = PuzzleInput[0];
+            Image = new SpaceImage(Width, Height, input);
+            int[,] clearImage = Image.ReadImage();
+            return Imager.ImageToString(clearImage);
         }
-
+        
         private string ShowImage()
         {
             int[,] clearImage = Image.ReadImage();

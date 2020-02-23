@@ -15,14 +15,15 @@ namespace AdventOfCode.Puzzles
         //another asteroid exactly between them. This line of sight can be at any angle, not just lines aligned to the
         //grid or diagonally. The best location is the asteroid that can detect the largest number of other asteroids.
 
-        private (int x, int y) bestLocation;
+
         protected override string InputFile => "day10.txt";
-        public override string ResultText => 
-            $"Best position for monitoring station is {bestLocation.x.ToString()}, {bestLocation.y.ToString()}";
-        public override void Solve()
+        private (int x, int y) bestLocation;
+        
+        public override string Solve()
         {
             var map = new AsteroidMap(PuzzleInput);
             bestLocation = map.BestLocation;
+            return $"Best position for monitoring station is {bestLocation.x.ToString()}, {bestLocation.y.ToString()}";
         }
         
     }

@@ -23,25 +23,17 @@ namespace AdventOfCode.Puzzles
         //How many panels does it paint at least once?
         
         protected override string InputFile => "day11.txt";
-        public override string ResultText => $"The robot painted {Result.ToString()} panels at least once";
 
         protected virtual bool StartOnWhite => false;
 
-        public override void Solve()
+        public override string Solve()
         {
             string instructions = PuzzleInput[0];
             var robot = new PaintingRobot(InstructionParser.Parse(instructions));
             robot.Start(StartOnWhite);
             int paintedPanels = robot.PaintedCount;
-            Result = paintedPanels;
-            ShowResult(robot.TileGrid);
+            return $"The robot painted {paintedPanels.ToString()} panels at least once";
         }
-
-        protected virtual void ShowResult(int[,] grid)
-        {
-        }
-        
-        
     }
 
     public class RegistrationImage: SpacePolice
@@ -49,12 +41,15 @@ namespace AdventOfCode.Puzzles
         //--- Part Two ---
         //a valid registration identifier is always eight capital letters. After starting the robot on a single white
         //panel instead, what registration identifier does it paint on your hull?
-        public override string ResultText => resultImage;
-        private string resultImage;
+
         protected override bool StartOnWhite => true;
-        protected override void ShowResult(int [,] grid)
+
+        public override string Solve()
         {
-            resultImage = Imager.ImageToString(grid);
+            string instructions = PuzzleInput[0];
+            var robot = new PaintingRobot(InstructionParser.Parse(instructions));
+            robot.Start(StartOnWhite);
+            return Imager.ImageToString(robot.TileGrid);
         }
     }
 }

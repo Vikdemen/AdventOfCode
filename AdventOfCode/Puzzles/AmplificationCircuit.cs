@@ -23,11 +23,10 @@ namespace AdventOfCode.Puzzles
         //Try every combination of phase settings on the amplifiers.
         //What is the highest signal that can be sent to the thrusters?
         protected override string InputFile => "day7.txt";
-        public override string ResultText => $"Maximum signal is {Result.ToString()}";
         protected const int NumberOfAmplifiers = 5;
         protected bool FeedbackMode;
 
-        public override void Solve()
+        public override string Solve()
         {
             long[] program = InstructionParser.Parse(PuzzleInput[0]);
             
@@ -37,7 +36,8 @@ namespace AdventOfCode.Puzzles
             
             int largestSignal = phaseSettingsVariants
                 .Select(variant => (int)amplifierChain.Run(variant)[0]).Max();
-            Result = largestSignal;
+            
+            return $"Maximum signal is {largestSignal.ToString()}";
         }
 
         protected virtual IComputer CreateAmplifier(long[] program)

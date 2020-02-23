@@ -18,15 +18,14 @@ namespace AdventOfCode.Puzzles
         //What is the diagnostic codeId for system ID 5?
         
         protected override string InputFile => "day5.txt";
-        public override string ResultText => $"Diagnostic code is {Result.ToString()}";
-
         public int InputInstruction { get; set; }
 
-        public override void Solve()
+        public override string Solve()
         {
             string instructions = PuzzleInput[0];
             var computer = new Computer(InstructionParser.Parse(instructions));
             int code = computer.Run(InputInstruction);
+            return $"Diagnostic code is {code.ToString()}";
         }
     }
 }

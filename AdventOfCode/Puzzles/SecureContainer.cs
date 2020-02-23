@@ -19,7 +19,6 @@ namespace AdventOfCode.Puzzles
         //How many different passwords within the range given in your puzzle input meet all of the criteria?
         
         protected override string InputFile => "day4.txt";
-        public override string ResultText => $"{Result.ToString()} passwords are valid";
         protected IPasswordValidator Validator { get; }
 
         public ValidPasswordCounter()
@@ -31,12 +30,13 @@ namespace AdventOfCode.Puzzles
             Validator = validator;
         }
         
-        public override void Solve()
+        public override string Solve()
         {
             string[] data = PuzzleInput[0].Split('-');
             int start = int.Parse(data[0]);
             int finish = int.Parse(data[1]);
-            Result = CountValid(start, finish);
+            int validPasswords = CountValid(start, finish);
+            return $"{validPasswords} passwords are valid";
         }
 
         private int CountValid (int start, int end)

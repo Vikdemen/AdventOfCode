@@ -10,18 +10,17 @@ namespace AdventOfCode.Puzzles
         //module, take its mass, divide by three, round down, and subtract 2.
         //What is the sum of the fuel requirements for all of the modules on your spacecraft?
         
-        
-        
         protected override string InputFile => "day1.txt";
-        public override string ResultText => $"We need {Result.ToString()} fuel in total";
-        
+        public int NeededFuel { get; protected set; }
+
         public static string CalculateFuel() => 
             SolvePuzzle(new FuelCalculator());
 
-        public override void Solve()
+        public override string Solve()
         {
             var data = Array.ConvertAll(PuzzleInput, int.Parse);
-            Result = CalculateFuel(data);
+            NeededFuel = CalculateFuel(data);
+            return $"We need {NeededFuel.ToString()} fuel total";
         }
 
         protected virtual int CalculateFuel(int[] data) =>

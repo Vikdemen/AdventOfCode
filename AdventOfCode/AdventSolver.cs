@@ -26,8 +26,7 @@ namespace AdventOfCode
         //chooses a command based on input, executes it and returns result.
         private static string ExecuteCommand(string commandName)
         {
-            CommandID commandID = GetCommand(commandName);
-            Func<string> action = GetAction(commandID);
+            Func<string> action = GetCommand(commandName);
             string result = action();
             return result;
         }
